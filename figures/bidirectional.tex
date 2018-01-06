@@ -1,0 +1,84 @@
+\begin{tikzpicture}[node distance=1cm]
+    % Reverse LSTM cells.
+    \node (reverse 1) [lstm, fill=green!20] {\rnn};
+    \node (reverse 2) [lstm, fill=green!20, right=of reverse 1] {\rnn};
+    \node (reverse 3) [block, right=of reverse 2] {$\cdots$};
+    \node (reverse 4) [lstm, fill=green!20, right=of reverse 3] {\rnn};
+
+    % Forward LSTM cells.
+    \foreach \x in {1, 2, 4} {%
+        \node (forward \x) [lstm, below=7mm of reverse \x, xshift=1cm] {\rnn};
+    }
+
+    \node (forward 3) [block, below=7mm of reverse 3, xshift=1cm] {$\cdots$};
+
+    % Labels.
+    \foreach \j in {1, 2} {%
+        \node (input \j) [below=of forward \j] {$\x_\j$};
+        \node (output \j) [above=of reverse \j, xshift=1.5mm] {$\y_\j$};
+    }
+
+    \node (input 3) [below=of forward 3] {$\cdots$};
+    \node (input 4) [below=of forward 4] {$\x_n$};
+    \node (output 3) [above=of reverse 3, xshift=1.5mm] {$\cdots$};
+    \node (output 4) [above=of reverse 4, xshift=1.5mm] {$\y_n$};
+
+    % Coordinates.
+    \foreach \j in {1, ..., 4} {%
+        \node (i \j) [coordinate, below=6mm of forward \j] {};
+        % Corner coordinate.
+        \node (y \j) [coordinate, above=4mm of reverse \j, xshift=3mm] {};
+        % Two output coordinates.
+        \node (forward y \j) [coordinate, above=6mm of y \j] {};
+        \node (reverse y \j) [coordinate, above=of reverse \j] {};
+    }
+
+    % Coordinates around the reverse state flow.
+    \foreach \j in {1, ..., 3} {%
+        \node (reverse state down \j) [coordinate, above=10mm of forward \j] {};
+        \node (reverse state up \j) [coordinate, above=1.25mm of reverse state down \j] {};
+    }
+
+    % Coordinates around the forward state flow.
+    \foreach \j in {2, ..., 4} {%
+        \node (forward state up \j) [coordinate, below=10mm of reverse \j] {};
+        \node (forward state down \j) [coordinate, below=1.25mm of forward state up \j] {};
+    }
+
+    % Paths.
+
+    % Cell to cell flow.
+    \foreach \j in {1, ..., 3} {
+        \pgfmathtruncatemacro{\k}{\j + 1}
+
+        \draw [path] (forward \j) -- (forward \k);
+        \draw [path] (reverse \k) -- (reverse \j);
+    }
+
+    % Input to forward LSTM and reverse LSTM to output.
+    \foreach \j in {1, ..., 4} {%
+        \draw [path] (input \j) -- (forward \j);
+        \draw [path] (reverse \j) -- (reverse y \j);
+    }
+
+    % Secondary input/output paths with no path intersections.
+    \draw [path] (i 1) -| (reverse 1);
+    \draw [path] (forward 4) |- (y 4) -- (forward y 4);
+
+    % Forward LSTM outputs.
+    \foreach \j in {1, ..., 3} {%
+        \draw [thick] (forward \j) -- (reverse state down \j);
+        \draw [path] (reverse state up \j) |- (y \j) -- (forward y \j);
+    }
+
+    % Reverse LSTM inputs.
+    \foreach \j in {2, ..., 4} {%
+        \draw [thick] (i \j) -| (forward state down \j);
+        \draw [path] (forward state up \j) -- (reverse \j);
+    }
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

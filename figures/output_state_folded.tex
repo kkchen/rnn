@@ -1,0 +1,22 @@
+\begin{tikzpicture}[node distance=7mm, auto]
+    \node (state) [state] {$\s_t$};
+    \node (input) [state, below=of state] {$\x_t$};
+    \node (output) [state, above=of state] {$\y_t$};
+    \node (loss) [function, above=of output] {$L$};
+    \node (data) [data, above=of loss] {$\ETA_t$};
+    \node (skip) [inner sep=0.5mm, above=1mm of state] {};
+    \node (skip l) [coordinate, left=7mm of skip] {};
+    \node (skip r) [coordinate, right=7mm of skip] {};
+
+    % Arrows.
+    \draw [path] (input) -- node [label, pos=0.4, right] {$\f$} (state);
+    \draw [path] (state) -- node [label, pos=0.6, right] {$\h$} (output);
+    \draw [path] (output) -- (loss);
+    \draw [path] (data) -- (loss);
+    \draw [thick] (output) -| node [label, right, pos=0.7] {$\f$} (skip r) -- (skip);
+    \draw [path] (skip) -- (skip l) |- (state);
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

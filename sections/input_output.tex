@@ -1,0 +1,104 @@
+\section{Inputs \& outputs}
+\subsection{}
+
+\begin{frame}{Fixed-sized inputs}
+    \begin{columns}
+        \begin{column}{0.15\textwidth}
+            \uncover<2->{\input{figures/latent_input}}
+        \end{column}
+        \begin{column}{0.41\textwidth}
+            In some \rnn{} applications, need to feed in constant \emph{fixed-size} $\z \in \Reals^l$
+            \begin{itemize}
+                \item<+-> I.e., not a sequence
+                \item $\z$ may be contextual information, or a latent vector
+                \item Input sequence $\x_t$ might not even exist
+                \item E.g., latent-to-sequence decoder
+            \end{itemize}
+            \uncover<+->{Common approaches}
+            \begin{itemize}
+                \item<.-> Left: append $\z$ to \emph{every} input $\x_t$
+                \item<+-> Right: set initial state $\s_0 = \z$
+                \item<.-> Combination of both
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.44\textwidth}
+            \uncover<3->{\input{figures/latent_state}}
+            \vspace{-4mm}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Fixed-size outputs}
+    \begin{columns}
+        \begin{column}{0.37\textwidth}
+            \uncover<2->{\input{figures/output}}
+        \end{column}
+        \begin{column}{0.63\textwidth}
+            In some \rnn{} applications, need a \emph{fixed-size} output $\y \in \Reals^p$
+            \begin{itemize}
+                \item<+-> I.e., not a sequence
+                \item $\y$ may be classification of a sequence
+                \item $\y$ may be a latent vector, e.g., sequence encoder
+            \end{itemize}
+            \uncover<+->{Common approach}
+            \begin{itemize}[<.->]
+                \item Ignore all \rnn{} outputs $\o_t$ except the last
+                \item Feed $\o_\tau$ to dense layer(s)
+                \item Final dense layer has width $p$ and output $\y$
+            \end{itemize}
+            \uncover<+->{Justification}
+            \begin{itemize}[<.->]
+                \item Final output $\o_\tau$ encodes information about \emph{entire} input $\x_1, \ldots, \x_\tau$
+                \item Dense layers reshape dimensions and provide extra processing
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Encoder--decoder sequence-to-sequence models, figure}
+    \vspace{5mm}
+    \input{figures/encoder_decoder}
+    \vspace{-2.5mm}
+
+    \begin{textblock}{9.5}(1,2)
+        If inputs $\x_1, \dots, \x_\tau$ and outputs $\y_1, \dots, \y_{\hat{\tau}}$ have different/variable lengths, \alert{encode} inputs to latent vector $\z \in \Reals^l$\uncover<2->{, and \alert{decode} $\z$ to outputs}
+    \end{textblock}
+\end{frame}
+
+\begin{frame}{Encoder--decoder sequence-to-sequence models, notes}
+    \begin{itemize}
+        \item Introduced by \citet{ChoEMNLP14}, \citet{Sutskever14}
+        \item Many ways to connect encoder and decoder
+        \begin{itemize}
+            \item Simplest: $\hat{\s}_1 = \s_\tau$; forces $\dim(\s_t) = \dim(\hat{\s}_t)$
+            \item As shown: use dense layer on encoder output $\o_\tau$; allows $\dim(\z) \ne \dim(\s_t)$
+            \item As aforementioned: can feed $\z$ as input to every input (as shown), use $\hat{\s}_1 = \z$ (forces $\dim(\z) = \dim(\hat{\s}_{\hat{t}})$), or both
+        \end{itemize}
+        \pause
+        \item Problem: difficult to encode all of $\x_1, \dots, \x_\tau$ in single vector $\z$ extracted from $\s_\tau$, especially for large $\tau$
+        \item Solution: attention mechanism \citep{BahdanauICLR15}
+        \begin{itemize}
+            \item Encoder hidden states $\s_1, \dots, \s_\tau$ are stored
+            \item At each $\hat{t}$ in the decoder, weighted average of $\s_1, \dots, \s_\tau$ forms context vector $\c_{\hat{t}}$
+            \item Weights are based on how well $\s_t$ aligns with $\hat{\s}_{\hat{t}}$
+            \item Context vector $\c_{\hat{t}}$ fed into decoder
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Embeddings}
+    \begin{itemize}
+        \item When classifying by one-hot encoding, all $c$ classes are $\sqrt{2}$ apart in $L^2$ distance
+        \item One-hot is fine for small $c$, but dim-$\tilde{c}$ embeddings ($\tilde{c} \ll c$) generally do better for large $c$
+        \item E.g., \texttt{sheep} should have smaller distance to \texttt{ewe} or \texttt{goat} than to \texttt{quasar} or \texttt{supersonic}
+        \item Embeddings can be pre-trained, or simultaneously trained with \rnn
+        \item Note: not at all unique to \rnn{}s
+    \end{itemize}
+
+    \input{figures/embed}
+\end{frame}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

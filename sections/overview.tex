@@ -1,0 +1,118 @@
+\section{Overview}
+\subsection{}
+
+\begin{frame}{Resources}
+    \begin{itemize}
+        \item Ian Goodfellow, Yoshua Bengio, and Aaron Courville.
+        \emph{Deep Learning}, ch.~10. MIT Press, 2016
+        \nocite{GoodfellowDL}
+        \begin{itemize}
+            \item Excellent primer
+            \item \textcolor{blue}{\url{http://www.deeplearningbook.org}}
+        \end{itemize}
+        \item References at the end of these slides
+        \item Talk to me! \smiley
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Why might I want an \rnn?}
+    \begin{itemize}
+        \item Universal approximation theorem: dense \nn{}s can model anything nice
+        \begin{itemize}
+            \item But doesn't specify how hard it is to train
+        \end{itemize}
+        \item Silly example: 5 seconds of 44,100 samples/s speech audio $\rightarrow$ 14 transcribed words
+        \begin{itemize}
+            \item $\exists$ $\sim$3000 commonly-used English words\footnote{The Internet}
+            \item $\Reals^{220,500} \to \Reals^{42,000}$ deep dense network?
+            (Theoretically possible, but please don't)
+            \item What if I speak 15 words over 5.01~s?
+        \end{itemize}
+    \end{itemize}
+    \pause
+
+    \begin{block}{}
+        Many processes are sequences through \alert{time} or \alert{steps}, with \alert{time-invariant dynamics}
+    \end{block}
+    \pause
+
+    \begin{itemize}
+        \item \rnn{}s are input--output models that force this structure
+        \begin{itemize}
+            \item E.g., \rnn{}s treat sample 213,913 same as 213,914; dense \nn{}s treat them entirely separately
+        \end{itemize}
+        \item Easier to converge to model with ``reasonable''/``desirable'' behavior
+        \item Far fewer parameters than naive dense networks
+        \item Flexible in how many steps to take
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Unfolded computational graphs (left) \& circuit diagrams (right)}
+    \begin{columns}
+        \begin{column}{0.71\textwidth}
+            \uncover<+->{\input{figures/unfolded}}
+            \uncover<+->{\input{figures/folded}}
+        \end{column}
+        \begin{column}{0.29\textwidth}
+            \begin{itemize}
+                \item<1-> Unfolded graph shows flow of vectors through \rnn
+                \item<2-> Circuit diagram compresses out time dimension
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Recurrent neural networks in one slide}
+    \begin{itemize}[<+->]
+        \item Express in terms of discrete-time dynamical systems: $t = 0, 1, \dots, \tau$
+        \item $\s_t \in \Reals^n$: (cell) state; initial condition $\s_0$ (often $\zero$)
+        \item<.-> $\x_t \in \Reals^q$: inputs
+        \item $\f: \Reals^n \times \Reals^q \to \Reals^n$: state update
+        \item<.-> $\THETA \in \Reals^m$: parameters for $\f$
+        \item State update:
+        \begin{equation*}
+            \s_t = \f(\s_{t-1}, \x_t; \THETA),
+            \quad \text{e.g.}, \,
+            \s_t = \tanh(\W \s_{t-1} + \U \x_t + \b), \;
+            \THETA = (\W, \U, \b)
+        \end{equation*}
+        \item Outputs: $\y_t \in \Reals^p$, $\h: \Reals^n \to \Reals^p$, parameters $\PHI \in \Reals^l$:
+        \begin{equation*}
+            \y_t = \h(\s_t; \PHI),
+            \quad \text{e.g.}, \,
+            \y_t = \mathrm{softmax}(\V \s_{t} + \c), \;
+            \PHI = (\V, \c)
+        \end{equation*}
+        \item That's it!  Now pick $\THETA$ and $\PHI$ to minimize loss $L(
+            \underbrace{(\ETA_1, \dots, \ETA_\tau)}_\text{data},
+            \underbrace{(\y_1, \dots, \y_\tau)}_\text{prediction}
+        )$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Backpropagation \& unrolling}
+    \begin{itemize}
+        \item<+-> I won't bore you with backprop equations; see \href{http://www.deeplearningbook.org}{\textcolor{blue}{Goodfellow's book}}
+        \item<.-> It's just a normal gradient via chain rule; any optimizer can be used
+        \item<+-> Need to forward and backprop through input--state--output relations, \emph{and} through time
+        \begin{itemize}
+            \item Forward and backprop generally serial through time
+        \end{itemize}
+        \item<.-> For state $\in \Reals^n$, inputs $\in \Reals^q$, outputs $\in \Reals^p$, length $\tau$:
+        \begin{itemize}
+            \item Backprop cost = $\O(\tau n^2) + \O(\tau n p) + \O(\tau n q)$ products
+            \item Watch out for very large \# time steps and input/state/output sizes
+        \end{itemize}
+        \item<+-> Software typically allows you to \alert{unroll} an \rnn{}
+        \begin{itemize}
+            \item Precomputes entire unfolded computational graph \& all gradients through all time steps
+            \item Faster, but more memory consumption
+            \item Good for small, fixed-length \rnn{}s
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

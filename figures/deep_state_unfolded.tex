@@ -1,0 +1,60 @@
+\begin{tikzpicture}[node distance=5mm, auto]
+    % States.
+    \node (state11) [state] {$\s_{11}$};
+    \node (state10) [state, left=7mm of state11] {$\s_{10}$};
+    \node (state12) [state, right=7mm of state11] {$\s_{12}$};
+    \node (state13) [block, right=7mm of state12] {$\cdots$};
+    \node (state14) [state, right=7mm of state13] {$\s_{1\tau}$};
+
+    \node (state21) [state, above=of state11] {$\s_{21}$};
+    \node (state20) [state, left=7mm of state21] {$\s_{20}$};
+    \node (state22) [state, above=of state12] {$\s_{22}$};
+    \node (state23) [block, above=of state13] {$\cdots$};
+    \node (state24) [state, above=of state14] {$\s_{2\tau}$};
+
+
+    % Inputs, outputs, losses.
+    \foreach\i in {1,2} {
+        \node (input\i) [state, below=of state1\i] {$\x_\i$};
+        \node (output\i) [state, above=of state2\i] {$\y_\i$};
+        \node (loss\i) [function, above=of output\i] {$L$};
+        \node (data\i) [data, above=of loss\i] {$\ETA_\i$};
+    }
+
+    \node (input3) [block, below=of state13] {$\cdots$};
+    \node (output3) [block, above=of state23] {$\cdots$};
+    \node (loss3) [block, above=of output3] {$\cdots$};
+    \node (data3) [block, above=of loss3] {$\cdots$};
+
+    \node (input4) [state, below=of state14] {$\x_\tau$};
+    \node (output4) [state, above=of state24] {$\y_\tau$};
+    \node (loss4) [function, above=of output4] {$L$};
+    \node (data4) [data, above=of loss4] {$\ETA_\tau$};
+
+    % Labels.
+    \foreach \l in {input, output, loss, data} {
+        \node [right=7mm of \l4] {\l};
+    }
+
+    \foreach \i in {1, 2} {%
+        \node [right=7mm of state\i4] {state \i};
+    }
+
+    % Arrows.
+    \foreach\i in {1, ..., 4} {
+        \draw [path] (input\i) -- node [label, pos=0.4, right] {$\f$} (state1\i);
+        \draw [path] (state1\i) -- node [label, pos=0.4, right] {$\g$} (state2\i);
+        \draw [path] (state2\i) -- node [label, pos=0.4, right] {$\h$} (output\i);
+        \draw [path] (output\i) -- (loss\i);
+        \draw [path] (data\i) -- (loss\i);
+    }
+
+    \foreach\i/\j in {0/1, 1/2, 2/3, 3/4} {
+        \draw [path] (state1\i) -- node [label, pos=0.4] {$\f$} (state1\j);
+        \draw [path] (state2\i) -- node [label, pos=0.4] {$\g$} (state2\j);
+    }
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

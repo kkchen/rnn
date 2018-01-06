@@ -1,0 +1,179 @@
+\documentclass[x11names,handout]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+% \usepackage{newpxtext}
+% \usepackage{newpxmath}
+\usepackage{bm}
+\usepackage{natbib}
+\usepackage[absolute, overlay]{textpos} % showboxes to show boxes.
+\usepackage{tikz}
+\usepackage{wasysym}
+
+% Fields.
+\newcommand*{\Reals}{\mathbb{R}}
+
+% Operators.
+\renewcommand*{\O}{\mathcal{O}}
+\renewcommand*{\P}{\mathrm{P}}
+
+% Matrices.
+\newcommand*{\I}{\mathbf{I}}
+\newcommand*{\U}{\mathbf{U}}
+\newcommand*{\V}{\mathbf{V}}
+\newcommand*{\W}{\mathbf{W}}
+
+% Vectors.
+\renewcommand*{\b}{\mathbf{b}}
+\renewcommand*{\c}{\mathbf{c}}
+\newcommand*{\f}{\mathbf{f}}
+\newcommand*{\g}{\mathbf{g}}
+\newcommand*{\h}{\mathbf{h}}
+\renewcommand*{\o}{\mathbf{o}}
+\renewcommand*{\r}{\mathbf{r}}
+\newcommand*{\s}{\mathbf{s}}
+\newcommand*{\st}{\tilde{\s}}
+\newcommand*{\x}{\mathbf{x}}
+\newcommand*{\y}{\mathbf{y}}
+\newcommand*{\z}{\mathbf{z}}
+\newcommand*{\one}{\mathbf{1}}
+\newcommand*{\zero}{\mathbf{0}}
+\newcommand*{\ETA}{\bm{\eta}}
+\newcommand*{\THETA}{\bm{\theta}}
+\newcommand*{\PHI}{\bm{\phi}}
+
+% All caps.
+\newcommand*{\ccr}{CCR}
+\newcommand*{\cnn}{CNN}
+\newcommand*{\gru}{GRU}
+\newcommand*{\hmm}{HMM}
+\newcommand*{\iclr}{ICLR}
+\newcommand*{\ida}{IDA}
+\newcommand*{\lstm}{LSTM}
+\newcommand*{\mlp}{MLP}
+\newcommand*{\nn}{NN}
+\newcommand*{\rnn}{RNN}
+
+% Make a variant of \vdots without the top vertical space.
+\makeatletter
+\DeclareRobustCommand{\vvdots}{%
+    \vbox{
+        \baselineskip4\p@\lineskiplimit\z@
+        \kern-\p@
+        \hbox{.}\hbox{.}\hbox{.}
+    }
+}
+\makeatother
+
+% Theme settings.
+\usetheme{Frankfurt}
+\usefonttheme[onlymath]{serif}
+
+% Other Beamer settings.
+\setbeamercovered{transparent}
+\AtBeginSection[]{%
+    \begin{frame}{Outline}
+        \tableofcontents[
+            sectionstyle=show/shaded,
+            subsectionstyle=hide/hide/hide
+        ]
+    \end{frame}
+}
+
+% Length settings.
+\geometry{papersize={17.0666666666666666667cm, 9.6cm}}
+\setlength{\TPHorizModule}{1cm}
+\setlength{\TPVertModule}{1cm}
+
+% TikZ commands.
+\usetikzlibrary{arrows.meta, positioning}
+
+\tikzstyle{binary} = [
+    draw,
+    thick,
+    circle,
+    minimum width=4mm,
+    inner sep=0pt,
+    fill=green!20
+]
+\tikzstyle{block} = [minimum width=7mm, minimum height=7mm, thick, rectangle, rounded corners, font=\small, inner sep=2.5pt]
+\tikzstyle{cell} = [draw, thick, rounded corners, fill=yellow!20]
+\tikzstyle{data} = [draw, block, fill=yellow!20]
+\tikzstyle{dense} = [lstm, fill=green!20]
+\tikzstyle{filter} = [draw, block, fill=yellow!20]
+\tikzstyle{function} = [draw, block, fill=red!20]
+\tikzstyle{gate} = [unary, fill=red!20]
+\tikzstyle{hmm} = [draw, fill=black!30, circle, minimum width=2mm, inner sep=0pt]
+\tikzstyle{label} = [font=\footnotesize]
+\tikzstyle{latent} = [draw, block, fill=green!20]
+\tikzstyle{layer} = [draw, block, fill=green!20]
+\tikzstyle{lstm} = [draw, block, fill=blue!20]
+\tikzstyle{path} = [-Latex, thick]
+\tikzstyle{plus} = [
+    binary,
+    append after command={%
+        [shorten >= \pgflinewidth, shorten <= \pgflinewidth]
+        (\tikzlastnode.north) edge (\tikzlastnode.south)
+        (\tikzlastnode.east) edge (\tikzlastnode.west)%
+    }
+]
+\tikzstyle{prod} = [
+    binary,
+    append after command={%
+        node [draw, circle, minimum width=1.5mm, inner sep=0pt]
+        at (\tikzlastnode.center) {}%
+    }
+]
+\tikzstyle{state} = [draw, block, fill=blue!20]
+\tikzstyle{unary} = [
+    draw,
+    thick,
+    rectangle,
+    rounded corners,
+    minimum width=7mm,
+    minimum height=6mm,
+    fill=blue!20
+]
+\tikzstyle{word} = [text height=1.5ex, text depth=0.25ex]
+
+% Figures.
+\graphicspath{{figures/}}
+
+% Title, author, date, classification, etc.
+\title{Recurrent neural networks}
+\author[Kevin K. Chen]{%
+    \texorpdfstring{%
+        Kevin K. Chen \\
+        \normalsize \href{%
+            mailto:kkchen@ccrwest.org%
+        }{%
+            \textcolor{blue}{\texttt{kkchen@ccrwest.org}}%
+        }%
+    }{%
+        Kevin K. Chen%
+    }%
+}
+\institute[IDA/CCRL]{Institute for Defense Analyses \\ Center for Communications Research - La Jolla}
+\date{February 22, 2018}
+
+% Bibliography commands.
+\bibliographystyle{plainnat}
+\setcitestyle{round}
+
+\begin{document}
+
+\include{sections/preamble}
+\include{sections/overview}
+\include{sections/connections}
+\include{sections/input_output}
+\include{sections/alternate}
+\include{sections/examples}
+\include{sections/conclusion}
+\include{sections/references}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

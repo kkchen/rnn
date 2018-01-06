@@ -1,0 +1,48 @@
+\begin{tikzpicture}[x=1.2cm, y=1.3cm, auto]
+    \foreach \i in {1, ..., 8} {
+        \node (input \i) [state] at (\i, 0) {$\x_\i$};
+        \node (state 1\i) [state] at (\i, 1) {};
+        \draw [path] (input \i) -- node [label, right, pos=0.4] {$\f$} (state 1\i);
+    }
+
+    \node (state 21) [state] at (1.5, 2) {};
+    \node (state 22) [state] at (3.5, 2) {};
+    \node (state 23) [state] at (5.5, 2) {};
+    \node (state 24) [state] at (7.5, 2) {};
+
+    \node (state 31) [state] at (2.5, 3) {};
+    \node (state 32) [state] at (6.5, 3) {};
+
+    \node (output) [state] at (4.5, 4) {$\y$};
+    \node (loss) [function] at (4.5, 5) {$L$};
+    \node (data) [data] at (3.5, 5) {$\ETA$};
+
+    \foreach \j in {1, ..., 4} {
+        \pgfmathtruncatemacro{\i}{2 * \j - 1}
+        \draw [path] (state 1\i) -- node [word, label, left] {$\g$} (state 2\j);
+    }
+
+    \foreach \j in {1, ..., 4} {
+        \pgfmathtruncatemacro{\i}{2 * \j}
+        \draw [path] (state 1\i) -- node [label, right] {$\h$} (state 2\j);
+    }
+
+    \foreach \i/\j in {1/1, 3/2} {
+        \draw [path] (state 2\i) -- node [word, label, above, pos=0.1] {$\g$} (state 3\j);
+    }
+
+    \foreach \i/\j in {2/1, 4/2} {
+        \draw [path] (state 2\i) -- node [label, above, pos=0.1] {$\h$} (state 3\j);
+    }
+
+    \draw [path] (state 31) -- node [word, label, above, pos=0.4] {$\g$} (output);
+    \draw [path] (state 32) -- node [word, label, above, pos=0.4] {$\h$} (output);
+
+    \draw [path] (output) -- (loss);
+    \draw [path] (data) -- (loss);
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

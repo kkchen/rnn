@@ -1,0 +1,64 @@
+\begin{tikzpicture}[x=5mm, y=5mm]
+    \node (input 0) [coordinate] at (0, 0) {};
+    \node (output 0) [coordinate] at (0, 2.2) {};
+
+    \uncover<.->{
+        \foreach \i in {0, ..., 20} {
+            \fill [black] (\i, 0) circle (0.7mm);
+        }
+
+        \node [align=right, left=of input 0] {input};
+        \draw [path] (8, -0.5) -- node [label, below] {$t$} (12, -0.5);
+    }
+
+    \visible<3->{
+        \foreach \i in {0, 1} {
+            \fill[blue!30] (\i, 2.2) circle (0.7mm);
+        }
+
+        \node [align=right, left=of output 0, blue] {output};
+    }
+
+    \foreach \i in {2, ..., 6} {
+        \visible<+|handout:0>{
+            \node [label, blue] at (\i, 0.6) {convolve};
+
+            \foreach \j in {-2, ..., 2} {
+                \fill [red] (\i+\j, 1.1) circle (0.7mm);
+            }
+
+            \draw [thick, blue] (\i-2.4, 0) -- (\i-2.4, 1.4) -- (\i+2.4, 1.4) -- (\i+2.4, 0);
+            \node at (\i+2, 1.1) [label, anchor=west, xshift=2mm, red] {kernel};
+            \draw [-Latex, blue] (\i, 1.4) -- (\i, 2);
+        }
+
+        \visible<.->{\fill [blue] (\i, 2.2) circle (0.7mm);}
+    }
+
+    \visible<+->{
+        \def\i{18}
+        \node [label, blue] at (\i, 0.6) {convolve};
+
+        \foreach \j in {-2, ..., 2} {
+            \fill [red] (\i+\j, 1.1) circle (0.7mm);
+        }
+
+        \draw [thick, blue] (\i-2.4, 0) -- (\i-2.4, 1.4) -- (\i+2.4, 1.4) -- (\i+2.4, 0);
+        \node at (\i+2, 1.1) [label, anchor=west, xshift=2mm, red] {kernel};
+        \draw [-Latex, blue] (\i, 1.4) -- (\i, 2);
+        \fill [blue] (\i, 2.2) circle (0.7mm);
+
+        \foreach \i in {7, ..., 17} {
+            \fill [blue] (\i, 2.2) circle (0.7mm);
+        }
+
+        \foreach \i in {19, 20} {
+            \fill [blue!30] (\i, 2.2) circle (0.7mm);
+        }
+    }
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

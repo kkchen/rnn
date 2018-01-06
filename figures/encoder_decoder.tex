@@ -1,0 +1,89 @@
+\begin{tikzpicture}[node distance=7mm, auto]
+    % Encoder.
+
+    \draw [cell, fill=orange!20] (-0.6, -0.8) rectangle (6.4, 3.4);
+
+    % States.
+    \node (e state0) [state] {$\s_0$};
+    \node (e state1) [state, right=of e state0] {$\s_1$};
+    \node (e state2) [state, right=of e state1] {$\s_2$};
+    \node (e state3) [block, right=of e state2] {$\cdots$};
+    \node (e state4) [state, right=of e state3] {$\s_\tau$};
+
+    % Inputs.
+    \node (e input1) [state, below=of e state1] {$\x_1$};
+    \node (e input2) [state, below=of e state2] {$\x_2$};
+    \node (e input3) [block, below=of e state3] {$\cdots$};
+    \node (e input4) [state, below=of e state4] {$\x_\tau$};
+
+    % Outputs, etc.
+    \node (rnn output) [state, above=of e state4] {$\o_\tau$};
+    \node (dense) [dense, above=of rnn output] {dense};
+    \node (latent) [state, right=1.15cm of rnn output, minimum height=5cm, yshift=-8mm] {$\z$};
+    \node (latent input) [coordinate, left=5mm of latent] {};
+
+    % Arrows.
+    \foreach\i in {1, ..., 4} {
+        \draw [path] (e input\i) -- node [label, pos=0.7, right] {$\f$} (e state\i);
+    }
+
+    \foreach\i/\j in {0/1, 1/2, 2/3, 3/4} {
+        \draw [path] (e state\i) -- node [label, pos=0.4] {$\f$} (e state\j);
+    }
+
+    \draw [path] (e state4) -- node [label, pos=0.4, right] {$\h$} (rnn output);
+    \draw [path] (rnn output) -- (dense);
+    \draw [path] (dense) -| (latent input) -- (latent);
+
+    % Decoder.
+    \uncover<2->{
+        \draw [cell, fill=orange!20] (8.8, -0.8) rectangle (14.35, 0.77);
+
+        % States.
+        \node (d state1) [state, right=of e state4, xshift=2.3cm] {$\hat{\s}_1$};
+        \node (d state2) [state, right=of d state1] {$\hat{\s}_2$};
+        \node (d state3) [block, right=of d state2] {$\cdots$};
+        \node (d state4) [state, right=of d state3] {$\hat{\s}_{\hat{\tau}}$};
+
+        % Inputs.
+        \node (d input1) [coordinate, below=of d state1] {};
+        \node (d input0) [coordinate, left=1cm of d input1] {};
+
+        % Outputs & losses.
+        \foreach\i in {1,2} {
+            \node (output\i) [state, above=of d state\i] {$\y_\i$};
+            \node (loss\i) [function, above=of output\i] {$L$};
+            \node (data\i) [data, above=of loss\i] {$\ETA_\i$};
+        }
+        g
+        \node (output3) [block, above=of d state3] {$\cdots$};
+        \node (loss3) [block, above=of output3] {$\cdots$};
+        \node (data3) [block, above=of loss3] {$\cdots$};
+
+        \node (output4) [state, above=of d state4] {$\y_{\hat{\tau}}$};
+        \node (loss4) [function, above=of output4] {$L$};
+        \node (data4) [data, above=of loss4] {$\ETA_{\hat{\tau}}$};
+
+        % Arrows.
+        \draw [thick] (latent) -| (d input0);
+
+        \foreach\i in {1, ..., 4} {
+            \draw [path] (d input0) -| (d state\i);
+            \draw [path] (d state\i) -- node [label, pos=0.3, right, xshift=-0.5mm] {$\hat{\h}$} (output\i);
+            \draw [path] (output\i) -- (loss\i);
+            \draw [path] (data\i) -- (loss\i);
+        }
+
+        \foreach\i/\j in {1/2, 2/3, 3/4} {
+            \draw [path] (d state\i) -- node [label, pos=0.4] {$\hat{\f}$} (d state\j);
+        }
+    }
+    % Labels.
+
+    \node at (1, 3) {encoder/reader};
+    \uncover<2->{\node at (11.575, -1.5) {decoder/writer};}
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

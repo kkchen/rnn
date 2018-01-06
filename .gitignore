@@ -1,0 +1,20 @@
+# System ignores.
+*~
+.DS_Store
+._*
+
+# LaTeX ignores.
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.pdf
+*.snm
+*.synctex
+*.synctex.gz*
+*.toc
+auto/

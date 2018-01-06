@@ -1,0 +1,40 @@
+\begin{tikzpicture}[node distance=7mm, auto]
+    % States.
+    \node (state1) [block] {$\cdots$};
+    \node (state2) [state, right=of state1] {$\s_{\tau-2}$};
+    \node (state3) [state, right=of state2] {$\s_{\tau-1}$};
+    \node (state4) [state, right=of state3] {$\s_\tau$};
+
+    % Inputs.
+    \node (input1) [block, below=of state1] {$\cdots$};
+
+    \foreach\i/\j in {2/-2, 3/-1, 4/} {
+        \node (input\i) [state, below=of state\i] {$\x_{\tau\j}$};
+    }
+
+    % Outputs, etc.
+    \node (rnn output) [state, above=of state4] {$\o_\tau$};
+    \node (dense) [dense, above=of rnn output] {dense};
+    \node (dense output) [state, above=of dense] {$\y$};
+    \node (loss) [function, left=of dense output] {$L$};
+    \node (data) [data, left=of loss] {$\ETA$};
+
+    % Arrows.
+    \foreach\i in {1, ..., 4} {
+        \draw [path] (input\i) -- node [label, pos=0.4, right] {$\f$} (state\i);
+    }
+
+    \foreach\i/\j in {1/2, 2/3, 3/4} {
+        \draw [path] (state\i) -- node [label, pos=0.4] {$\f$} (state\j);
+    }
+
+    \draw [path] (state4) -- node [label, pos=0.4, right] {$\h$} (rnn output);
+    \draw [path] (rnn output) -- (dense);
+    \draw [path] (dense) -- (dense output);
+    \draw [path] (dense output) -- (loss);
+    \draw [path] (data) -- (loss);
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

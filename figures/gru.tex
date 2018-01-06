@@ -1,0 +1,72 @@
+\begin{tikzpicture}[node distance=1cm, x=8.8mm, y=8.8mm, auto]
+    \clip (-6, -0.2) rectangle (10, 8);
+
+    % Cells.
+    \draw [cell] (-12, 0.3) rectangle (-4, 7.5);
+    \draw [cell] (-2.5, 0.3) rectangle (6.5, 7.5);
+    \draw [cell] (8, 0.3) rectangle (15, 7.5);
+
+    % Nodes.
+    \node (input) [coordinate] at (0.5, -0.2) {};
+
+    \node (update affine) [gate] at (-1, 3.5) {$\mathrm{aff}$};
+    \node (update sigmoid) [gate] at (-1, 5) {$\sigma$};
+
+    \node (reset affine) [gate] at (1, 3.5) {$\mathrm{aff}$};
+    \node (reset sigmoid) [gate] at (2.5, 3.5) {$\sigma$};
+
+    \node (state prod) [prod] at (-1, 7) {};
+    \node (update prod) [prod] at (2.5, 1.3) {};
+
+    \node (prev state) [coordinate] at (-4, 7) {};
+    \node (prev state 0) [coordinate] at (-2, 7) {};
+    \node (prev state 1) [coordinate] at (-2, 1.3) {};
+
+    \node (subtract) [gate] at (2.25, 6) {$1 - \z_t$};
+    \node (alt prod) [prod] at (5.5, 6) {};
+
+    \node (alt affine) [unary] at (5.5, 2.67) {$\mathrm{aff}$};
+    \node (alt tanh) [unary] at (5.5, 4.33) {$\tanh$};
+
+    \node (sum) [plus] at (5.5, 7) {};
+    \node (state) [coordinate] at (8, 7) {};
+
+    % Paths.
+    \draw [path] (input) -- node [right, pos=0.05] {$\x_t$} (0.5, 2.2);
+
+    \draw [ultra thick] (-1.02, 2.2) -- (1.02, 2.2);
+    \draw [path] (-1, 2.2) -- (update affine);
+    \draw [path] (1, 2.2) -- (reset affine);
+
+    \draw [path] (update affine) -- (update sigmoid);
+    \draw [path] (reset affine) -- (reset sigmoid);
+
+    \draw [path] (prev state) -- node [below, pos=0.27] {$\s_{t-1}$} (state prod);
+    \draw [path] (-3.5, 7) -- (-3.5, 8);
+    \draw [path] (update sigmoid) -- (state prod);
+    \draw [path] (-1, 6) -- node [left, pos=0] {$\z_t$}(subtract);
+    \draw [path] (subtract) -- (alt prod);
+    \draw [path] (state prod) -- (sum);
+    \draw [path] (reset sigmoid) -- node [right, pos=0.4] {$\r_t$} (update prod);
+
+    \draw [thick] (prev state 0) -- (prev state 1);
+    \draw [thick] (prev state 1) -- (0.4, 1.3);
+    \draw [path] (0.6, 1.3) -- (update prod);
+    \draw [path] (-0.5, 1.3) -- (-0.5, 2.2);
+
+    \draw [ultra thick] (4, 1.32) -- (4, 0.68);
+    \draw [path] (update prod) -- (4, 1.3);
+    \draw [path] (0.5, 0.7) -- (4, 0.7);
+    \draw [path] (4, 1) -| (alt affine);
+    \draw [path] (alt affine) -- (alt tanh);
+    \draw [path] (alt tanh) -- node [right, pos=0.4] {$\st_t$} (alt prod);
+    \draw [path] (alt prod) -- (sum);
+
+    \draw [path] (sum) -- (state);
+    \draw [path] (7, 7) -- node [below, pos=0] {$\s_t$}(7, 8);
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

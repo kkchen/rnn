@@ -1,0 +1,61 @@
+\begin{tikzpicture}[x=1.1cm, y=7mm]
+    % All States.
+    \foreach \i in {1, ..., 5, 7} {
+        \foreach \j in {1, 3, 4, ..., 6} {
+            \node (\i\j) [hmm] at (\i, \j) {};
+        }
+
+        \node (\i2) at (\i, 2) [label] {\vvdots};
+    }
+
+    \foreach \j in {1, 3, 4, ..., 6} {
+        \node (6\j) at (6, \j) [label] {$\cdots$};
+    }
+
+    \node (62) [circle, minimum width=2mm, inner sep=0pt] at (6, 2) {};
+
+    % Traversed states.
+    \node (state 13) [hmm, fill=blue] at (1, 3) {};
+    \node (state 21) [hmm, fill=blue] at (2, 1) {};
+    \node (state 33) [hmm, fill=blue] at (3, 3) {};
+    \node (state 45) [hmm, fill=blue] at (4, 5) {};
+    \node (state 56) [hmm, fill=blue] at (5, 6) {};
+    \node (state 74) [hmm, fill=blue] at (7, 4) {};
+
+    % All connections.
+    \foreach \i in {1, ..., 6} {
+        \pgfmathtruncatemacro{\j}{\i + 1}
+
+        \foreach \k in {1, ..., 6} {
+            \foreach \l in {1, ..., 6} {
+                \draw [black!30] (\i\k) -- (\j\l);
+            }
+        }
+    }
+
+    % Traversed connections.
+    \draw [blue, thick] (state 13) -- (state 21);
+    \draw [blue, thick] (state 21) -- (state 33);
+    \draw [blue, thick] (state 33) -- (state 45);
+    \draw [blue, thick] (state 45) -- (state 56);
+    \draw [blue, thick] (state 56) -- (62);
+    \draw [blue, thick] (62) -- (state 74);
+
+    % Outputs.
+    \draw [thick] (0.9, 0.25) -- (7.1, 0.25);
+
+    \foreach \i in {1, ..., 5, 7} {
+        \node [hmm, fill=red] at (\i, -0.5) {};
+    }
+
+    \node at (6, -0.5) {$\cdots$};
+
+    \foreach \i in {1, ..., 7} {
+        \draw [path, blue] (\i, 0.7) -- (\i, -0.3);
+    }
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

@@ -1,0 +1,70 @@
+\begin{tikzpicture}[node distance=4.9mm, auto]
+    % Embeddings.
+    \node (e rnn 0) [lstm] {\rnn};
+
+    \foreach \i in {0, ..., 4} {
+        \pgfmathtruncatemacro{\j}{\i + 1}
+        \node (e rnn \j) [lstm, right=of e rnn \i] {\rnn};
+    }
+
+    \foreach \i in {0, ..., 5} {
+        \node (embed \i) [dense, below=of e rnn \i] {embed};
+        \node (e output \i) [coordinate, above=of e rnn \i] {};
+    }
+
+    \node (e input 0) [word, below=of embed 0] {I};
+    \node (e input 1) [word, below=of embed 1] {threw};
+    \node (e input 2) [word, below=of embed 2] {it};
+    \node (e input 3) [word, below=of embed 3] {on};
+    \node (e input 4) [word, below=of embed 4] {the};
+    \node (e input 5) [word, below=of embed 5] {ground};
+
+    \node (e output) [coordinate, above=of e rnn 5] {};
+
+    \foreach \i in {0, ..., 5} {
+        \draw [path] (e input \i) -- node [label, right] {$\Reals^c$} (embed \i);
+        \draw [path] (embed \i) -- node [label, right] {$\Reals^{\tilde{c}}$} (e rnn \i);
+    }
+
+    \foreach \i in {0, ..., 4} {
+        \pgfmathtruncatemacro{\j}{\i + 1}
+        \draw [path] (e rnn \i) -- (e rnn \j);
+    }
+
+    \draw [path] (e rnn 5) -- (e output);
+
+    % Projections.
+    \node (f rnn 0) [lstm, right=of embed 5] {\rnn};
+
+    \foreach \i in {0, ..., 3} {
+        \pgfmathtruncatemacro{\j}{\i + 1}
+        \node (f rnn \j) [lstm, right=of f rnn \i] {\rnn};
+    }
+
+    \foreach \i in {0, ..., 4} {
+        \node (f input \i) [coordinate, below=of f rnn \i] {};
+        \node (project \i) [word, dense, above=of f rnn \i] {map};
+    }
+
+    \node (f output 0) [word, above=of project 0] {Je};
+    \node (f output 1) [word, above=of project 1] {l'ai};
+    \node (f output 2) [word, above=of project 2] {jet\'e};
+    \node (f output 3) [word, above=of project 3] {par};
+    \node (f output 4) [word, above=of project 4] {terre};
+
+    \foreach \i in {0, ..., 4} {
+        \draw [path] (f input \i) -- (f rnn \i);
+        \draw [path] (f rnn \i) -- node [label, right] {$\Reals^{\tilde{d}}$} (project \i);
+        \draw [path] (project \i) -- node [label, right] {$\Reals^d$} (f output \i);
+    }
+
+    \foreach \i in {0, ..., 3} {
+        \pgfmathtruncatemacro{\j}{\i + 1}
+        \draw [path] (f rnn \i) -- (f rnn \j);
+    }
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

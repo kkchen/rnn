@@ -1,0 +1,42 @@
+\begin{tikzpicture}[node distance=7mm, auto]
+    % States.
+    \node (state0) [latent] {$\z$};
+    \node (state1) [state, right=of state0] {$\s_1$};
+    \node (state2) [state, right=of state1] {$\s_2$};
+    \node (state3) [block, right=of state2] {$\cdots$};
+    \node (state4) [state, right=of state3] {$\s_\tau$};
+
+    % Inputs, outputs, losses.
+    \foreach\i in {1, 2} {
+        \node (input\i) [state, below=1 cm of state\i] {$\x_\i$};
+        \node (output\i) [state, above=of state\i] {$\y_\i$};
+        \node (loss\i) [function, above=of output\i] {$L$};
+        \node (data\i) [data, above=of loss\i] {$\ETA_\i$};
+    }
+
+    \node (input3) [block, below=1cm of state3] {$\cdots$};
+    \node (output3) [block, above=of state3] {$\cdots$};
+    \node (loss3) [block, above=of output3] {$\cdots$};
+    \node (data3) [block, above=of loss3] {$\cdots$};
+
+    \node (input4) [state, below=1cm of state4] {$\x_\tau$};
+    \node (output4) [state, above=of state4] {$\y_\tau$};
+    \node (loss4) [function, above=of output4] {$L$};
+    \node (data4) [data, above=of loss4] {$\ETA_\tau$};
+
+    % Arrows.
+    \foreach\i in {1, ..., 4} {
+        \draw [path] (input\i) -- node [label, pos=0.4, right] {$\f$} (state\i);
+        \draw [path] (state\i) -- node [label, pos=0.4, right] {$\h$} (output\i);
+        \draw [path] (output\i) -- (loss\i);
+        \draw [path] (data\i) -- (loss\i);
+    }
+
+    \foreach\i/\j in {0/1, 1/2, 2/3, 3/4} {
+        \draw [path] (state\i) -- node [label, pos=0.4] {$\f$} (state\j);
+    }
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:
