@@ -1,0 +1,65 @@
+\begin{tikzpicture}[x=1.25cm, y=5mm]
+    \node (input 0) [coordinate] at (0, 0) {};
+
+    \uncover<3>{
+        \foreach \i in {0, ..., 11} {
+            \node (input \i) [fill=black, circle, minimum width=1.4mm, inner sep=0pt] at (\i, 0) {};
+        }
+
+        \foreach \i in {0, ..., 3} {
+            \node (rnn \i) [lstm, above=5mm of input \i] {RNN};
+        }
+
+        \node (state 0) [left=3.5mm of rnn 0] {$\zero$};
+    }
+
+    \uncover<4>{
+        \foreach \i in {4, ..., 7} {
+            \node (rnn \i) [lstm, above=5mm of input \i] {RNN};
+        }
+    }
+
+    \uncover<5>{
+        \foreach \i in {8, ..., 11} {
+            \node (rnn \i) [lstm, above=5mm of input \i] {RNN};
+        }
+    }
+
+    \foreach \i in {0, ..., 11} {
+        \node (output \i) [coordinate, above=5mm of rnn \i] {};
+    }
+
+    \uncover<3>{
+        \draw [path] (state 0) -- (rnn 0);
+
+        \foreach \i in {0, ..., 3} {
+            \pgfmathtruncatemacro{\j}{\i + 1}
+            \draw [path] (input \i) -- (rnn \i);
+            \draw [path] (rnn \i) -- (rnn \j);
+            \draw [path] (rnn \i) -- (output \i);
+        }
+    }
+
+    \uncover<4>{
+        \foreach \i in {4, ..., 7} {
+            \pgfmathtruncatemacro{\j}{\i + 1}
+            \draw [path] (input \i) -- (rnn \i);
+            \draw [path] (rnn \i) -- (rnn \j);
+            \draw [path] (rnn \i) -- (output \i);
+        }
+    }
+
+    \uncover<5>{
+        \foreach \i in {8, ..., 11} {
+            \pgfmathtruncatemacro{\j}{\i - 1}
+            \draw [path] (input \i) -- (rnn \i);
+            \draw [path] (rnn \j) -- (rnn \i);
+            \draw [path] (rnn \i) -- (output \i);
+        }
+    }
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

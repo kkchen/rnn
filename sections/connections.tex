@@ -222,20 +222,28 @@
     \input{figures/deep_state_to_state_folded}
 \end{frame}
 
-\begin{frame}{Odds \& ends}
+\begin{frame}{Odds \& ends (1/2)}
     \begin{itemize}
         \item<+-> Skip connections help prevent vanishing/exploding gradients by shortening state-to-state paths
         \item<+-> Gradient clipping helps prevent exploding gradients \citep{MikolovPhD12,PascanuICML13}
         \item<+-> Stateful \rnn{}
-        \begin{itemize}
+        \begin{itemize}[<.->]
             \item Typically, initialize cell state to $\s_0 = \zero$
-            \item Stateful: set $\s_0$ to be $\s_\tau$ from the last \rnn{} invocation
+            \item<+-> Stateful: set $\s_0$ to be $\s_\tau$ from the last \rnn{} invocation
+            \item Used when actual sequence length $>$ RNN length: each RNN invocation extends previous one
+            \item Use truncated backpropagation through time: only backprop through beginning of RNN, not beginning of sequence
         \end{itemize}
+    \end{itemize}
+
+    \input{figures/stateful}
+\end{frame}
+
+\begin{frame}{Odds \& ends (2/2)}
+    \begin{itemize}
         \item<+-> Variable-length \rnn{}
         \begin{itemize}
             \item Beauty of \rnn{} is that length $\tau$ need not be fixed
             \item Recall silly example: variable length of speech auto $\to$ variable length sentence
-            \item Use truncated backpropagation through time
             \item But static-length \rnn{}s are more computationally optimizable
         \end{itemize}
         \item<+-> Variable-length inputs/outputs
