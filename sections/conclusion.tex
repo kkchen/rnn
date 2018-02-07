@@ -3,14 +3,14 @@
 
 \begin{frame}{Conclusion}
     \begin{itemize}
-        \item \rnn{}s are a powerful way to model sequences
+        \item RNN{}s are a powerful way to model sequences
         \item Flexible: inputs \& outputs can be fixed-length sequences, variable-length sequences, fixed-size vectors, etc.
-        \item \lstm{}s and \gru{}s are the best architectures today
+        \item LSTM{}s and GRU{}s are the best architectures today
         \item $\# \text{params} \sim (\text{state size})^2$,
         $\# \text{ops} \sim \text{length} \cdot (\text{state size})^2$
         \begin{itemize}
             \item Generally non-parallelizable in time
-            \item Watch out for long \rnn{}s and large state sizes
+            \item Watch out for long RNN{}s and large state sizes
         \end{itemize}
         \item Many ways to make deep; stacking is most common
     \end{itemize}

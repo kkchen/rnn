@@ -7,7 +7,7 @@
             \uncover<2->{\input{figures/latent_input}}
         \end{column}
         \begin{column}{0.41\textwidth}
-            In some \rnn{} applications, need to feed in constant \emph{fixed-size} $\z \in \Reals^l$
+            In some RNN{} applications, need to feed in constant \emph{fixed-size} $\z \in \Reals^l$
             \begin{itemize}
                 \item<+-> I.e., not a sequence
                 \item $\z$ may be contextual information, or a latent vector
@@ -34,7 +34,7 @@
             \uncover<2->{\input{figures/output}}
         \end{column}
         \begin{column}{0.63\textwidth}
-            In some \rnn{} applications, need a \emph{fixed-size} output $\y \in \Reals^p$
+            In some RNN{} applications, need a \emph{fixed-size} output $\y \in \Reals^p$
             \begin{itemize}
                 \item<+-> I.e., not a sequence
                 \item $\y$ may be classification of a sequence
@@ -42,7 +42,7 @@
             \end{itemize}
             \uncover<+->{Common approach}
             \begin{itemize}[<.->]
-                \item Ignore all \rnn{} outputs $\o_t$ except the last
+                \item Ignore all RNN{} outputs $\o_t$ except the last
                 \item Feed $\o_\tau$ to dense layer(s)
                 \item Final dense layer has width $p$ and output $\y$
             \end{itemize}
@@ -65,6 +65,7 @@
     \end{textblock}
 \end{frame}
 
+% To do: explain attention mechanism.
 \begin{frame}{Encoder--decoder sequence-to-sequence models, notes}
     \begin{itemize}
         \item Introduced by \citet{ChoEMNLP14}, \citet{Sutskever14}
@@ -91,8 +92,8 @@
         \item When classifying by one-hot encoding, all $c$ classes are $\sqrt{2}$ apart in $L^2$ distance
         \item One-hot is fine for small $c$, but dim-$\tilde{c}$ embeddings ($\tilde{c} \ll c$) generally do better for large $c$
         \item E.g., \texttt{sheep} should have smaller distance to \texttt{ewe} or \texttt{goat} than to \texttt{quasar} or \texttt{supersonic}
-        \item Embeddings can be pre-trained, or simultaneously trained with \rnn
-        \item Note: not at all unique to \rnn{}s
+        \item Embeddings can be pre-trained, or simultaneously trained with RNN
+        \item Note: not at all unique to RNN{}s
     \end{itemize}
 
     \input{figures/embed}

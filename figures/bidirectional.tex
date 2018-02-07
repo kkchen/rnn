@@ -1,13 +1,13 @@
 \begin{tikzpicture}[node distance=1cm]
     % Reverse LSTM cells.
-    \node (reverse 1) [lstm, fill=green!20] {\rnn};
-    \node (reverse 2) [lstm, fill=green!20, right=of reverse 1] {\rnn};
+    \node (reverse 1) [lstm, fill=green!20] {RNN};
+    \node (reverse 2) [lstm, fill=green!20, right=of reverse 1] {RNN};
     \node (reverse 3) [block, right=of reverse 2] {$\cdots$};
-    \node (reverse 4) [lstm, fill=green!20, right=of reverse 3] {\rnn};
+    \node (reverse 4) [lstm, fill=green!20, right=of reverse 3] {RNN};
 
     % Forward LSTM cells.
     \foreach \x in {1, 2, 4} {%
-        \node (forward \x) [lstm, below=7mm of reverse \x, xshift=1cm] {\rnn};
+        \node (forward \x) [lstm, below=7mm of reverse \x, xshift=1cm] {RNN};
     }
 
     \node (forward 3) [block, below=7mm of reverse 3, xshift=1cm] {$\cdots$};

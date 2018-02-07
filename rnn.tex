@@ -1,9 +1,11 @@
-\documentclass[x11names,handout]{beamer}
+\documentclass[x11names,handout,10pt]{beamer}
+
+\usefonttheme{professionalfonts}
 
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-% \usepackage{newpxtext}
-% \usepackage{newpxmath}
+% \usepackage{lmodern}
+\usepackage{newpxtext}
+\usepackage{newpxmath}
 \usepackage{bm}
 \usepackage{natbib}
 \usepackage[absolute, overlay]{textpos} % showboxes to show boxes.
@@ -42,18 +44,6 @@
 \newcommand*{\THETA}{\bm{\theta}}
 \newcommand*{\PHI}{\bm{\phi}}
 
-% All caps.
-\newcommand*{\ccr}{CCR}
-\newcommand*{\cnn}{CNN}
-\newcommand*{\gru}{GRU}
-\newcommand*{\hmm}{HMM}
-\newcommand*{\iclr}{ICLR}
-\newcommand*{\ida}{IDA}
-\newcommand*{\lstm}{LSTM}
-\newcommand*{\mlp}{MLP}
-\newcommand*{\nn}{NN}
-\newcommand*{\rnn}{RNN}
-
 % Make a variant of \vdots without the top vertical space.
 \makeatletter
 \DeclareRobustCommand{\vvdots}{%
@@ -67,7 +57,7 @@
 
 % Theme settings.
 \usetheme{Frankfurt}
-\usefonttheme[onlymath]{serif}
+\usefonttheme{serif}
 
 % Other Beamer settings.
 \setbeamercovered{transparent}
@@ -78,7 +68,7 @@
 }
 
 % Length settings.
-\geometry{papersize={17.0666666666666666667cm, 9.6cm}}
+% \geometry{papersize={17.0666666666666666667cm, 9.6cm}}
 \setlength{\TPHorizModule}{1cm}
 \setlength{\TPVertModule}{1cm}
 

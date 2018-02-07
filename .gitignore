@@ -14,7 +14,6 @@
 *.out
 *.pdf
 *.snm
-*.synctex
-*.synctex.gz*
+*.synctex*
 *.toc
 auto/

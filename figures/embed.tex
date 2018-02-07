@@ -1,10 +1,10 @@
 \begin{tikzpicture}[node distance=4.4mm, auto]
     % Embeddings.
-    \node (e rnn 0) [lstm] {\rnn};
+    \node (e rnn 0) [lstm] {RNN};
 
     \foreach \i in {0, ..., 4} {
         \pgfmathtruncatemacro{\j}{\i + 1}
-        \node (e rnn \j) [lstm, right=of e rnn \i] {\rnn};
+        \node (e rnn \j) [lstm, right=of e rnn \i] {RNN};
     }
 
     \foreach \i in {0, ..., 5} {
@@ -34,11 +34,11 @@
     \draw [path] (e rnn 5) -- (e output);
 
     % Projections.
-    \node (f rnn 0) [lstm, right=of embed 5] {\rnn};
+    \node (f rnn 0) [lstm, right=of embed 5] {RNN};
 
     \foreach \i in {0, ..., 3} {
         \pgfmathtruncatemacro{\j}{\i + 1}
-        \node (f rnn \j) [lstm, right=of f rnn \i] {\rnn};
+        \node (f rnn \j) [lstm, right=of f rnn \i] {RNN};
     }
 
     \foreach \i in {0, ..., 4} {

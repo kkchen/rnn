@@ -9,10 +9,10 @@
 
     % RNNs.
     \foreach \i in {1, 2, 4} {%
-        \node (node 1\i) [lstm, above=5.5mm of node 0\i] {\rnn};
-        \node (node 2\i) [lstm, above=5.5mm of node 1\i] {\rnn};
+        \node (node 1\i) [lstm, above=5.5mm of node 0\i] {RNN};
+        \node (node 2\i) [lstm, above=5.5mm of node 1\i] {RNN};
         \node (node 3\i) [block, above=5.5mm of node 2\i] {\vvdots};
-        \node (node 4\i) [lstm, above=5.5mm of node 3\i] {\rnn};
+        \node (node 4\i) [lstm, above=5.5mm of node 3\i] {RNN};
         \node (node 5\i) [block, above=5.5mm of node 4\i] {$\y_\i$};
     }
 

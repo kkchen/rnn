@@ -1,22 +1,23 @@
 \section{Alternate architectures}
 \subsection{}
 
-\begin{frame}{\rnn{}s and Hidden Markov Models}
+% To do: explain HMM.
+\begin{frame}{RNN{}s and Hidden Markov Models}
     \begin{columns}
         \begin{column}{0.46\textwidth}
             \input{figures/hmm}
         \end{column}
         \begin{column}{0.54\textwidth}
             \begin{itemize}
-                \item<+-> \rnn{}s are deterministic, \hmm{}s are stochastic
-                \item<.-> But posterior probabilities of states and outputs of \hmm{}s are deterministic
+                \item<+-> RNN{}s are deterministic, HMM{}s are stochastic
+                \item<.-> But posterior probabilities of states and outputs of HMM{}s are deterministic
             \end{itemize}
             \begin{block}{}<+->
-                An \hmm{}, when viewed in terms of probabilities, is a special case of an \rnn{}
+                An HMM{}, when viewed in terms of probabilities, is a special case of an RNN{}
             \end{block}
             \begin{itemize}[<.->]
-                \item \hmm{} transition probabilities analogous to \rnn{} weights
-                \item<+-> Why do traditional \rnn{}s and \hmm{}s excel at different tasks?
+                \item HMM{} transition probabilities analogous to RNN{} weights
+                \item<+-> Why do traditional RNN{}s and HMM{}s excel at different tasks?
                 \item What about a task makes each work well?
                 \item What can each do well that the other cannot?
             \end{itemize}
@@ -30,14 +31,14 @@
         \item<+-> Physics/engineering analogy: time analogous to 1-D space
         \item Ordinary differential equation methods translate between the two
     \end{itemize}
-    \uncover<+->{Can use 1-D \cnn{}s to process sequences}
+    \uncover<+->{Can use 1-D CNN{}s to process sequences}
 
     \begin{center}
         \input{figures/cnn}
 
         \uncover<+->{
             \begin{tabular}{c|c}
-                \rnn & \cnn \\
+                RNN & CNN \\
                 \hline
                 $\y_t$ depends on $\s_0, \dots, \s_t$, also $\s_{t+1}, \dots, \s_\tau$ if desired &
                 $\y_t$ depends on $\s_{t-\delta}, \dots, \s_{t+\delta}$ \\
@@ -47,8 +48,8 @@
     \end{center}
 
     \uncover<.->{
-        \rnn{}s generally stronger than 1-D \cnn{}s for sequences;
-        \rnn{} cell state intuitively helpful
+        RNN{}s generally stronger than 1-D CNN{}s for sequences;
+        RNN{} cell state intuitively helpful
     }
 \end{frame}
 

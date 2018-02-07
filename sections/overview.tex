@@ -15,9 +15,9 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Why might I want an \rnn?}
+\begin{frame}{Why might I want an RNN?}
     \begin{itemize}
-        \item Universal approximation theorem: dense \nn{}s can model anything nice
+        \item Universal approximation theorem: dense NN{}s can model anything nice
         \begin{itemize}
             \item But doesn't specify how hard it is to train
         \end{itemize}
@@ -29,17 +29,18 @@
             \item What if I speak 15 words over 5.01~s?
         \end{itemize}
     \end{itemize}
-    \pause
+\end{frame}
 
+\begin{frame}{What RNNs do}
     \begin{block}{}
         Many processes are sequences through \alert{time} or \alert{steps}, with \alert{time-invariant dynamics}
     \end{block}
     \pause
 
     \begin{itemize}
-        \item \rnn{}s are input--output models that force this structure
+        \item RNN{}s are input--output models that force this structure
         \begin{itemize}
-            \item E.g., \rnn{}s treat sample 213,913 same as 213,914; dense \nn{}s treat them entirely separately
+            \item E.g., RNN{}s treat sample 213,913 same as 213,914; dense NN{}s treat them entirely separately
         \end{itemize}
         \item Easier to converge to model with ``reasonable''/``desirable'' behavior
         \item Far fewer parameters than naive dense networks
@@ -55,7 +56,7 @@
         \end{column}
         \begin{column}{0.29\textwidth}
             \begin{itemize}
-                \item<1-> Unfolded graph shows flow of vectors through \rnn
+                \item<1-> Unfolded graph shows flow of vectors through RNN
                 \item<2-> Circuit diagram compresses out time dimension
             \end{itemize}
         \end{column}
@@ -103,11 +104,11 @@
             \item Backprop cost = $\O(\tau n^2) + \O(\tau n p) + \O(\tau n q)$ products
             \item Watch out for very large \# time steps and input/state/output sizes
         \end{itemize}
-        \item<+-> Software typically allows you to \alert{unroll} an \rnn{}
+        \item<+-> Software typically allows you to \alert{unroll} an RNN{}
         \begin{itemize}
             \item Precomputes entire unfolded computational graph \& all gradients through all time steps
             \item Faster, but more memory consumption
-            \item Good for small, fixed-length \rnn{}s
+            \item Good for small, fixed-length RNN{}s
         \end{itemize}
     \end{itemize}
 \end{frame}
