@@ -2,22 +2,22 @@
 \subsection{}
 
 % To do: explain HMM.
-\begin{frame}{RNN{}s and Hidden Markov Models}
+\begin{frame}{RNNs and Hidden Markov Models}
     \begin{columns}
         \begin{column}{0.46\textwidth}
             \input{figures/hmm}
         \end{column}
         \begin{column}{0.54\textwidth}
             \begin{itemize}
-                \item<+-> RNN{}s are deterministic, HMM{}s are stochastic
-                \item<.-> But posterior probabilities of states and outputs of HMM{}s are deterministic
+                \item<+-> RNNs are deterministic, HMMs are stochastic
+                \item<.-> But posterior probabilities of states and outputs of HMMs are deterministic
             \end{itemize}
             \begin{block}{}<+->
-                An HMM{}, when viewed in terms of probabilities, is a special case of an RNN{}
+                An HMM, when viewed in terms of probabilities, is a special case of an RNN
             \end{block}
             \begin{itemize}[<.->]
-                \item HMM{} transition probabilities analogous to RNN{} weights
-                \item<+-> Why do traditional RNN{}s and HMM{}s excel at different tasks?
+                \item HMM transition probabilities analogous to RNN weights
+                \item<+-> Why do traditional RNNs and HMMs excel at different tasks?
                 \item What about a task makes each work well?
                 \item What can each do well that the other cannot?
             \end{itemize}
@@ -31,7 +31,7 @@
         \item<+-> Physics/engineering analogy: time analogous to 1-D space
         \item Ordinary differential equation methods translate between the two
     \end{itemize}
-    \uncover<+->{Can use 1-D CNN{}s to process sequences}
+    \uncover<+->{Can use 1-D CNNs to process sequences}
 
     \begin{center}
         \input{figures/cnn}
@@ -48,8 +48,8 @@
     \end{center}
 
     \uncover<.->{
-        RNN{}s generally stronger than 1-D CNN{}s for sequences;
-        RNN{} cell state intuitively helpful
+        RNNs generally stronger than 1-D CNNs for sequences;
+        RNN cell state intuitively helpful
     }
 \end{frame}
 

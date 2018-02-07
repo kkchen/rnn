@@ -17,7 +17,7 @@
 
 \begin{frame}{Why might I want an RNN?}
     \begin{itemize}
-        \item<+-> Universal approximation theorem: dense NN{}s can model anything nice
+        \item<+-> Universal approximation theorem: dense NNs can model anything nice
         \begin{itemize}
             \item But doesn't specify how hard it is to train
         \end{itemize}
@@ -44,15 +44,15 @@
         Many processes are sequences through \alert{time} or \alert{steps}, with \alert{time-invariant dynamics}
     \end{block}
 
-    \begin{block}{RNN{}s are input--output models that impose this structure}<+->
+    \begin{block}{RNNs are input--output models that impose this structure}<+->
         Interpretation for mechanical/aerospace/electrical engineers: RNNs are \alert{discrete-time nonlinear time-invariant dynamical systems} in which the input/state/output dynamics are learned from (i.e., fitted to) data
     \end{block}
 
     \begin{itemize}
         \item Note: RNN states usually very difficult to interpret
-        \item E.g., RNN{}s assign same dynamics @ time step 213,913 as 213,914
+        \item E.g., RNNs assign same dynamics @ time step 213,913 as 213,914
         \begin{itemize}
-            \item Dense NN{}s treat them entirely separately
+            \item Dense NNs treat them entirely separately
         \end{itemize}
         \item Easier to converge to model with ``reasonable''/``desirable'' behavior
         \item Far fewer parameters than naive dense networks
@@ -108,11 +108,11 @@
             \item Backprop cost = $\O(\tau n^2) + \O(\tau n p) + \O(\tau n q)$ products
             \item Watch out for very large \# time steps and input/state/output sizes
         \end{itemize}
-        \item<+-> Software typically allows you to \alert{unroll} an RNN{}
+        \item<+-> Software typically allows you to \alert{unroll} an RNN
         \begin{itemize}
             \item Precomputes entire unfolded computational graph \& all gradients through all time steps
             \item Faster, but more memory consumption
-            \item Good for small, fixed-length RNN{}s
+            \item Good for small, fixed-length RNNs
         \end{itemize}
     \end{itemize}
 \end{frame}

@@ -89,15 +89,15 @@
 
     \begin{itemize}
         \item<+-> Introduced by~\citet{HochreiterNC97}; analysis by \citet{GreffIEEENNLS17}
-        \item<.-> RNN{} problem: long backprop through time leads to vanishing/exploding gradients
+        \item<.-> RNN problem: long backprop through time leads to vanishing/exploding gradients
         \item<+-> Key insight: \alert{forget gate $\f_t$} reduces dependency on states far in the past $\implies$ better-behaved gradients
         \item<.-> Gating behavior determined by inputs/outputs, not statically
         \item<+-> Typically initialize forget bias to $\b_\f = \one$~\citep{GersNC00,JozefowiczICML15}
         \begin{itemize}
-            \item Otherwise, LSTM{} will forget too aggressively early in training
+            \item Otherwise, LSTM will forget too aggressively early in training
         \end{itemize}
         \item<.-> Can include state $\s_t$ in gate operands (peephole connections)
-        \item<+-> The most common and arguably the strongest RNN{} architecture in use today \citep{JozefowiczICML15}
+        \item<+-> The most common and arguably the strongest RNN architecture in use today \citep{JozefowiczICML15}
     \end{itemize}
 \end{frame}
 
@@ -136,15 +136,15 @@
     \begin{itemize}
         \item<+-> Introduced by \citet{ChoEMNLP14}
         \item<.-> \alert{Reset gate $\r_t$} limits how much $\s_{t-1}$ plays into $\st_t$
-        \item<.-> \alert{Update gate $\z_t$} similar to LSTM{} forget gate, but linearly interpolates between $\s_{t-1}$ and $\st_t$
-        \item<+-> Hand-wavy argument: LSTM{} output \& output gate not really necessary
+        \item<.-> \alert{Update gate $\z_t$} similar to LSTM forget gate, but linearly interpolates between $\s_{t-1}$ and $\st_t$
+        \item<+-> Hand-wavy argument: LSTM output \& output gate not really necessary
         \begin{itemize}
             \item Too flexible, not enough structure, too many parameters $\implies$ harder to train
-            \item Recall: RNN{}s preferable to dense networks because imposing structure makes good network easier to obtain via optimization
+            \item Recall: RNNs preferable to dense networks because imposing structure makes good network easier to obtain via optimization
         \end{itemize}
-        \item<+-> Also arguably the strongest RNN{} architecture today \citep{JozefowiczICML15}
+        \item<+-> Also arguably the strongest RNN architecture today \citep{JozefowiczICML15}
         \begin{itemize}
-            \item No consensus on LSTM{} vs.~GRU{}
+            \item LSTM more popular than GRU; no consensus on which is stronger
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -157,10 +157,10 @@
         \begin{column}{0.47\textwidth}
             \begin{itemize}[<.->]
                 \item<+-> Humans tend to process sequences begin-to-end
-                \item Often, RNN{}s need not do the same
+                \item Often, RNNs need not do the same
                 \item E.g., English word generation: \texttt{\ldots{}ing} likely followed by \texttt{<end>}, but also \texttt{ng<end>} likely preceded by \texttt{\ldots{}i}
             \end{itemize}
-            \uncover<+->{Bidirectional RNN{}: \textcolor{blue}{forward}- and \textcolor{Green4}{reverse}-directional RNN{}s with separate states, outputs, weights, biases}
+            \uncover<+->{Bidirectional RNN: \textcolor{blue}{forward}- and \textcolor{Green4}{reverse}-directional RNNs with separate states, outputs, weights, biases}
             \begin{itemize}[<.->]
                 \item Each receives same inputs
                 \item Outputs concatenated at each step
@@ -171,18 +171,18 @@
     \end{columns}
 \end{frame}
 
-\begin{frame}{Stacked RNN{}s}
+\begin{frame}{Stacked RNNs}
     \begin{columns}
         \begin{column}{0.41\textwidth}
             \input{figures/stacked}
         \end{column}
         \begin{column}{0.59\textwidth}
             \begin{itemize}
-                \item LSTM{}s and GRU{}s are powerful, but they're still shallow
+                \item LSTMs and GRUs are powerful, but they're still shallow
                 \item By far the most common way to make them deep is to \alert{stack} them
-                \item Output of one RNN{} used as input to another; repeat \emph{ad infinitum}
+                \item Output of one RNN used as input to another; repeat \emph{ad infinitum}
                 \pause
-                \item RNN{}s can be bidirectional
+                \item RNNs can be bidirectional
                 \item Easy to implement---1 or 2 lines of code
                 \item Common to use same state size in all layers
                 \begin{itemize}
@@ -193,25 +193,25 @@
     \end{columns}
 \end{frame}
 
-\begin{frame}{Other deep RNN{}s: deep input-to-state connections}
+\begin{frame}{Other deep RNNs: deep input-to-state connections}
     \hspace{2cm}
     \input{figures/deep_input_unfolded}
     \input{figures/deep_input_folded}
 \end{frame}
 
-\begin{frame}{Other deep RNN{}s: deep state-to-output connections}
+\begin{frame}{Other deep RNNs: deep state-to-output connections}
     \hspace{2cm}
     \input{figures/deep_output_unfolded}
     \input{figures/deep_output_folded}
 \end{frame}
 
-\begin{frame}{Other deep RNN{}s: multiple recurrent state layers \citep{GravesICASSP13}}
+\begin{frame}{Other deep RNNs: multiple recurrent state layers \citep{GravesICASSP13}}
     \hspace{2cm}
     \input{figures/deep_state_unfolded}
     \input{figures/deep_state_folded}
 \end{frame}
 
-\begin{frame}{Other deep RNN{}s: deep state-to-state connections \citep{PascanuICLR14}}
+\begin{frame}{Other deep RNNs: deep state-to-state connections \citep{PascanuICLR14}}
     \input{figures/deep_state_to_state_unfolded}
     \input{figures/deep_state_to_state_folded}
 \end{frame}
@@ -220,10 +220,10 @@
     \begin{itemize}
         \item<+-> Skip connections help prevent vanishing/exploding gradients by shortening state-to-state paths
         \item<+-> Gradient clipping helps prevent exploding gradients \citep{MikolovPhD12,PascanuICML13}
-        \item<+-> Stateful RNN{}
+        \item<+-> Stateful RNN
         \begin{itemize}[<.->]
             \item Typically, initialize cell state to $\s_0 = \zero$
-            \item<+-> Stateful: set $\s_0$ to be $\s_\tau$ from the last RNN{} invocation
+            \item<+-> Stateful: set $\s_0$ to be $\s_\tau$ from the last RNN invocation
             \item Used when actual sequence length $>$ RNN length: each RNN invocation extends previous one
             \item Use truncated backpropagation through time: only backprop through beginning of RNN, not beginning of sequence
         \end{itemize}
@@ -235,16 +235,16 @@
 
 \begin{frame}{Odds \& ends (2/2)}
     \begin{itemize}
-        \item<+-> Variable-length RNN{}
+        \item<+-> Variable-length RNN
         \begin{itemize}
-            \item Beauty of RNN{} is that length $\tau$ need not be fixed
+            \item Beauty of RNN is that length $\tau$ need not be fixed
             \item Recall silly example: variable length of speech auto $\to$ variable length sentence
-            \item But static-length RNN{}s are more computationally optimizable
+            \item But static-length RNNs are more computationally optimizable
         \end{itemize}
         \item<+-> Variable-length inputs/outputs
         \begin{itemize}
-            \item Common approach: add \texttt{<end>} token to vocabulary; stop RNN{} when \texttt{<end>} sampled
-            \item More generally: add extra scalar output that ends RNN{} when condition met
+            \item Common approach: add \texttt{<end>} token to vocabulary; stop RNN when \texttt{<end>} sampled
+            \item More generally: add extra scalar output that ends RNN when condition met
             \item Alternate approach: add output that predicts length $\tau$; then run for $\tau$ steps
             \begin{itemize}
                 \item Important to add $\tau$ or $\tau - t$ as input to node $t$, lest sequence ends abruptly
