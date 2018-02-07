@@ -29,19 +29,22 @@
     Sequences analogous to 1-D space
     \begin{itemize}
         \item<+-> Physics/engineering analogy: time analogous to 1-D space
-        \item Ordinary differential equation methods translate between the two
+        \item ODE methods translate between the two
     \end{itemize}
     \uncover<+->{Can use 1-D CNNs to process sequences}
 
+    \vspace{-4mm}
     \begin{center}
         \input{figures/cnn}
+        \vspace{4mm}
 
         \uncover<+->{
             \begin{tabular}{c|c}
                 RNN & CNN \\
                 \hline
-                $\y_t$ depends on $\s_0, \dots, \s_t$, also $\s_{t+1}, \dots, \s_\tau$ if desired &
+                $\y_t$ depends on $\s_0, \dots, \s_t$ &
                 $\y_t$ depends on $\s_{t-\delta}, \dots, \s_{t+\delta}$ \\
+                (also $\s_{t+1}, \dots, \s_\tau$ if desired) \\
                 generally non-parallelizable across $t$ & parallelizable across $t$ \\
             \end{tabular}
         }
@@ -54,18 +57,15 @@
 \end{frame}
 
 \begin{frame}{Recursive neural networks}
-    \begin{columns}
-        \begin{column}{0.61\textwidth}
-            \input{figures/recursive.tex}
-        \end{column}
-        \begin{column}{0.39\textwidth}
-            \begin{itemize}
-                \item Introduced by \citet{PollackAI90}
-                \item Advantage: longest connection $\approx \log_2 \tau$, rather than $\tau$
-                \item Tree structure can be static or data-dependent
-            \end{itemize}
-        \end{column}
-    \end{columns}
+    \input{figures/recursive.tex}
+
+    \begin{textblock}{5.1}(6.7, 1.3)
+        \begin{itemize}
+            \item Introduced by \citet{PollackAI90}
+            \item Advantage: longest connection $\approx \log_2 \tau$, not $\tau$
+            \item Tree structure can be static or data-dependent
+        \end{itemize}
+    \end{textblock}
 \end{frame}
 
 %%% Local Variables:

@@ -1,4 +1,4 @@
-\begin{tikzpicture}[x=5mm, y=5mm]
+\begin{tikzpicture}[x=4mm, y=5mm]
     \node (input 0) [coordinate] at (0, 0) {};
     \node (output 0) [coordinate] at (0, 2.2) {};
 
@@ -7,7 +7,7 @@
             \fill [black] (\i, 0) circle (0.7mm);
         }
 
-        \node [align=right, left=of input 0] {input};
+        \node [align=right, left=3mm of input 0] {input};
         \draw [path] (8, -0.5) -- node [label, below] {$t$} (12, -0.5);
     }
 
@@ -16,7 +16,7 @@
             \fill[blue!30] (\i, 2.2) circle (0.7mm);
         }
 
-        \node [align=right, left=of output 0, blue] {output};
+        \node [align=right, left=3mm of output 0, blue] {output};
     }
 
     \foreach \i in {2, ..., 6} {
