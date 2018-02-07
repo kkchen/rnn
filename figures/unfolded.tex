@@ -24,11 +24,6 @@
     \node (loss4) [function, above=of output4] {$L$};
     \node (data4) [data, above=of loss4] {$\ETA_\tau$};
 
-    % Labels.
-    \foreach \l in {state, input, output, loss, data} {
-        \node [right=of \l4] {\l};
-    }
-
     % Arrows.
     \foreach\i in {1, ..., 4} {
         \draw [path] (input\i) -- node [label, pos=0.4, right] {$\f$} (state\i);

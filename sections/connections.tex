@@ -3,11 +3,10 @@
 
 \begin{frame}{State-to-state connections}
     \begin{columns}
-        \begin{column}{0.71\textwidth}
+        \begin{column}{0.602\textwidth}
             \input{figures/unfolded}
-            \input{figures/folded}
         \end{column}
-        \begin{column}{0.29\textwidth}
+        \begin{column}{0.398\textwidth}
             \begin{itemize}
                 \item State-to-state connections are advantageous
                 \item Hidden state $\s_t$ (ideally) encodes all information about dynamics up to time $t$, in relatively unconstrained way
@@ -19,16 +18,18 @@
 
 \begin{frame}{Output-to-state connections}
     \begin{columns}
-        \begin{column}{0.71\textwidth}
+        \begin{column}{0.47\textwidth}
             \input{figures/output_state_unfolded}
-            \input{figures/output_state_folded}
         \end{column}
-        \begin{column}{0.29\textwidth}
+        \begin{column}{0.53\textwidth}
             \begin{itemize}
                 \item Weaker: $\y_t$ must encode transition to $\s_{t+1}$ \emph{and} match $\ETA_t$
                 \item Forward-prop still non-parallelizable
                 \item $\s_t$ not time-coupled
-                \item Each time step can be trained independently $\implies$ backprop parallelizable
+                \item Each time step can be trained independently
+                \begin{itemize}
+                    \item $\implies$ Backprop parallelizable
+                \end{itemize}
                 \item Not obvious---rederive backprop equations yourself \smiley
             \end{itemize}
         \end{column}
@@ -37,15 +38,14 @@
 
 \begin{frame}{Teacher forcing}
     \begin{columns}
-        \begin{column}{0.71\textwidth}
+        \begin{column}{0.47\textwidth}
             \input{figures/teacher_forcing_unfolded}
-            \input{figures/teacher_forcing_folded}
         \end{column}
-        \begin{column}{0.29\textwidth}
-            \begin{itemize}
-                \item Training: use data point $\ETA_{t-1}$ for $\s_t$
+        \begin{column}{0.53\textwidth}
+            \begin{itemize}[<.->]
+                \item Training: use data $\ETA_{t-1}$ for $\s_t$
                 \item Forward \& backprop parallelizable
-                \item Inference: use architecture on previous slide (minus $\ETA_t$ and $L$)
+                \item<+-> Inference: connect output $\y_t$ to $\s_t$
                 \item Can be combined with state-to-state or output-to-state connections for better performance
             \end{itemize}
         \end{column}
@@ -53,11 +53,8 @@
 \end{frame}
 
 \begin{frame}{Long short-term memory, figure}
-    \begin{center}
-        \vspace{-4mm}
-        \input{figures/lstm}
-        \vspace{-7mm}
-    \end{center}
+    \centering
+    \input{figures/lstm}
 \end{frame}
 
 \begin{frame}{Long short-term memory, equations}
@@ -94,7 +91,7 @@
         \item<+-> Introduced by~\citet{HochreiterNC97}; analysis by \citet{GreffIEEENNLS17}
         \item<.-> RNN{} problem: long backprop through time leads to vanishing/exploding gradients
         \item<+-> Key insight: \alert{forget gate $\f_t$} reduces dependency on states far in the past $\implies$ better-behaved gradients
-        \item<.-> Gating behavior determined by inputs/outputs, rather than statically
+        \item<.-> Gating behavior determined by inputs/outputs, not statically
         \item<+-> Typically initialize forget bias to $\b_\f = \one$~\citep{GersNC00,JozefowiczICML15}
         \begin{itemize}
             \item Otherwise, LSTM{} will forget too aggressively early in training
@@ -105,11 +102,8 @@
 \end{frame}
 
 \begin{frame}{Gated recurrent unit, figure}
-    \begin{center}
-        \vspace{-7mm}
-        \input{figures/gru}
-        \vspace{-7mm}
-    \end{center}
+    \centering
+    \input{figures/gru}
 \end{frame}
 
 \begin{frame}{Gated recurrent unit, equations}
