@@ -1,4 +1,4 @@
-\begin{tikzpicture}[node distance=1cm]
+\begin{tikzpicture}[node distance=7mm, x=7mm, y=8mm]
     % Reverse LSTM cells.
     \node (reverse 1) [lstm, fill=green!20] {RNN};
     \node (reverse 2) [lstm, fill=green!20, right=of reverse 1] {RNN};
@@ -7,10 +7,10 @@
 
     % Forward LSTM cells.
     \foreach \x in {1, 2, 4} {%
-        \node (forward \x) [lstm, below=7mm of reverse \x, xshift=1cm] {RNN};
+        \node (forward \x) [lstm, below=5mm of reverse \x, xshift=8mm] {RNN};
     }
 
-    \node (forward 3) [block, below=7mm of reverse 3, xshift=1cm] {$\cdots$};
+    \node (forward 3) [block, below=5mm of reverse 3, xshift=8mm] {$\cdots$};
 
     % Labels.
     \foreach \j in {1, 2} {%
@@ -25,23 +25,23 @@
 
     % Coordinates.
     \foreach \j in {1, ..., 4} {%
-        \node (i \j) [coordinate, below=6mm of forward \j] {};
+        \node (i \j) [coordinate, below=4mm of forward \j] {};
         % Corner coordinate.
-        \node (y \j) [coordinate, above=4mm of reverse \j, xshift=3mm] {};
+        \node (y \j) [coordinate, above=2mm of reverse \j, xshift=3mm] {};
         % Two output coordinates.
-        \node (forward y \j) [coordinate, above=6mm of y \j] {};
+        \node (forward y \j) [coordinate, above=5mm of y \j] {};
         \node (reverse y \j) [coordinate, above=of reverse \j] {};
     }
 
     % Coordinates around the reverse state flow.
     \foreach \j in {1, ..., 3} {%
-        \node (reverse state down \j) [coordinate, above=10mm of forward \j] {};
+        \node (reverse state down \j) [coordinate, above=8mm of forward \j] {};
         \node (reverse state up \j) [coordinate, above=1.25mm of reverse state down \j] {};
     }
 
     % Coordinates around the forward state flow.
     \foreach \j in {2, ..., 4} {%
-        \node (forward state up \j) [coordinate, below=10mm of reverse \j] {};
+        \node (forward state up \j) [coordinate, below=8mm of reverse \j] {};
         \node (forward state down \j) [coordinate, below=1.25mm of forward state up \j] {};
     }
 

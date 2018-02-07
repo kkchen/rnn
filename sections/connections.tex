@@ -6,9 +6,13 @@
         \begin{column}{0.602\textwidth}
             \input{figures/unfolded}
         \end{column}
+
         \begin{column}{0.398\textwidth}
+            \begin{block}{}
+                State-to-state connections are advantageous
+            \end{block}
+
             \begin{itemize}
-                \item State-to-state connections are advantageous
                 \item Hidden state $\s_t$ (ideally) encodes all information about dynamics up to time $t$, in relatively unconstrained way
                 \item Problem: $\s_t$ time-coupling $\implies$ non-parallelizable
             \end{itemize}
@@ -21,9 +25,13 @@
         \begin{column}{0.47\textwidth}
             \input{figures/output_state_unfolded}
         \end{column}
+
         \begin{column}{0.53\textwidth}
+            \begin{block}{}
+                Weaker: $\y_t$ must encode transition to $\s_{t+1}$ \emph{and} match $\ETA_t$
+            \end{block}
+
             \begin{itemize}
-                \item Weaker: $\y_t$ must encode transition to $\s_{t+1}$ \emph{and} match $\ETA_t$
                 \item Forward-prop still non-parallelizable
                 \item $\s_t$ not time-coupled
                 \item Each time step can be trained independently
@@ -41,9 +49,13 @@
         \begin{column}{0.47\textwidth}
             \input{figures/teacher_forcing_unfolded}
         \end{column}
+
         \begin{column}{0.53\textwidth}
+            \begin{block}{}
+                Training: use data $\ETA_{t-1}$ for $\s_t$
+            \end{block}
+
             \begin{itemize}[<.->]
-                \item Training: use data $\ETA_{t-1}$ for $\s_t$
                 \item Forward \& backprop parallelizable
                 \item<+-> Inference: connect output $\y_t$ to $\s_t$
                 \item Can be combined with state-to-state or output-to-state connections for better performance
@@ -78,10 +90,13 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Long short-term memory, comments}
+\begin{frame}[t]{Long short-term memory, comments (1/2)}
     \begin{block}{}
         \vspace{-5mm}
         \begin{align*}
+            \alert<2->{\text{forget:} \quad \f_t} &= \alert<2->{\sigma(\U_\f \x_t + \W_\f \y_{t-1} + \b_\f)} \\
+            \text{input:} \quad \g_t &= \sigma(\U_\g \x_t + \W_\g \y_{t-1} + \b_\g) \\
+            \text{output:} \quad \h_t &= \sigma(\U_\h \x_t + \W_\h \y_{t-1} + \b_\h) \\
             \text{state update:} \quad \s_t &= \alert<2->{\f_t} \circ \s_{t-1} + \g_t \circ \tanh(\U_\s \x_t + \W_\s \y_{t-1} + \b_\s) \\
             \text{output:} \quad \y_t &= \h_t \circ \tanh(\s_t)
         \end{align*}
@@ -92,11 +107,28 @@
         \item<.-> RNN problem: long backprop through time leads to vanishing/exploding gradients
         \item<+-> Key insight: \alert{forget gate $\f_t$} reduces dependency on states far in the past $\implies$ better-behaved gradients
         \item<.-> Gating behavior determined by inputs/outputs, not statically
+        \item<.-> For general RNNs, gradient clipping helps prevent exploding gradients \citep{MikolovPhD12,PascanuICML13}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Long short-term memory, comments (2/2)}
+    \begin{block}{}
+        \vspace{-5mm}
+        \begin{align*}
+            \text{forget:} \quad \f_t &= \sigma(\alert<2>{\U_\f \x_t + \W_\f \y_{t-1} + \alert<1>{\b_\f}}) \\
+            \text{input:} \quad \g_t &= \sigma(\alert<2>{\U_\g \x_t + \W_\g \y_{t-1} + \b_\g}) \\
+            \text{output:} \quad \h_t &= \sigma(\alert<2>{\U_\h \x_t + \W_\h \y_{t-1} + \b_\h}) \\
+            \text{state update:} \quad \s_t &= \f_t \circ \s_{t-1} + \g_t \circ \tanh(\U_\s \x_t + \W_\s \y_{t-1} + \b_\s) \\
+            \text{output:} \quad \y_t &= \h_t \circ \tanh(\s_t)
+        \end{align*}
+    \end{block}
+
+    \begin{itemize}
         \item<+-> Typically initialize forget bias to $\b_\f = \one$~\citep{GersNC00,JozefowiczICML15}
         \begin{itemize}
             \item Otherwise, LSTM will forget too aggressively early in training
         \end{itemize}
-        \item<.-> Can include state $\s_t$ in gate operands (peephole connections)
+        \item<+-> Can include state $\s_t$ in gate operands (peephole connections)
         \item<+-> The most common and arguably the strongest RNN architecture in use today \citep{JozefowiczICML15}
     \end{itemize}
 \end{frame}
@@ -128,6 +160,8 @@
     \begin{block}{}
         \vspace{-5mm}
         \begin{align*}
+            \alert{\text{reset:} \quad \r_t} &= \alert{\sigma(\U_\r \x_t + \W_\r \s_{t-1} + \b_\r)} \\
+            \alert{\text{update:} \quad \z_t} &= \alert{\sigma(\U_\z \x_t + \W_\z \s_{t-1} + \b_\z)} \\
             \text{alternate state:} \quad \st_t &= \tanh(\U_\s \x_t + \W_\s (\alert{\r_t} \circ \s_{t-1}) + \b_\s) \in (-1, 1)^n \\
             \text{state update:} \quad \s_t &= \alert{\z_t} \circ \s_{t-1} + \alert{(\one - \z_t)} \circ \st_t
         \end{align*}
@@ -137,12 +171,12 @@
         \item<+-> Introduced by \citet{ChoEMNLP14}
         \item<.-> \alert{Reset gate $\r_t$} limits how much $\s_{t-1}$ plays into $\st_t$
         \item<.-> \alert{Update gate $\z_t$} similar to LSTM forget gate, but linearly interpolates between $\s_{t-1}$ and $\st_t$
-        \item<+-> Hand-wavy argument: LSTM output \& output gate not really necessary
+        \item<+-> Hand-wavy argument: LSTM output \& gate not necessary
         \begin{itemize}
-            \item Too flexible, not enough structure, too many parameters $\implies$ harder to train
+            \item Too flexible, not enough structure, too many parameters
             \item Recall: RNNs preferable to dense networks because imposing structure makes good network easier to obtain via optimization
         \end{itemize}
-        \item<+-> Also arguably the strongest RNN architecture today \citep{JozefowiczICML15}
+        \item<+-> Also arguably the strongest RNN today \citep{JozefowiczICML15}
         \begin{itemize}
             \item LSTM more popular than GRU; no consensus on which is stronger
         \end{itemize}
@@ -150,17 +184,21 @@
 \end{frame}
 
 \begin{frame}{Bidirectionality}
+    \begin{itemize}[<.->]
+        \item<+-> Humans tend to process sequences begin-to-end
+        \item Often, RNNs need not do the same
+        \item E.g., English word generation: \texttt{\ldots{}ing} likely followed by \texttt{<end>}, but also \texttt{ng<end>} likely preceded by \texttt{\ldots{}i}
+    \end{itemize}
+
+    \begin{block}<+->{Bidirectional RNN}
+        \textcolor{blue}{Forward}- and \textcolor{Green4}{reverse}-directional RNNs with separate states, outputs, weights, biases
+    \end{block}
+
     \begin{columns}
-        \begin{column}{0.53\textwidth}
+        \begin{column}{0.6\textwidth}
             \input{figures/bidirectional}
         \end{column}
-        \begin{column}{0.47\textwidth}
-            \begin{itemize}[<.->]
-                \item<+-> Humans tend to process sequences begin-to-end
-                \item Often, RNNs need not do the same
-                \item E.g., English word generation: \texttt{\ldots{}ing} likely followed by \texttt{<end>}, but also \texttt{ng<end>} likely preceded by \texttt{\ldots{}i}
-            \end{itemize}
-            \uncover<+->{Bidirectional RNN: \textcolor{blue}{forward}- and \textcolor{Green4}{reverse}-directional RNNs with separate states, outputs, weights, biases}
+        \begin{column}{0.4\textwidth}
             \begin{itemize}[<.->]
                 \item Each receives same inputs
                 \item Outputs concatenated at each step
@@ -173,13 +211,17 @@
 
 \begin{frame}{Stacked RNNs}
     \begin{columns}
-        \begin{column}{0.41\textwidth}
+        \begin{column}{0.457\textwidth}
             \input{figures/stacked}
         \end{column}
-        \begin{column}{0.59\textwidth}
+        \begin{column}{0.543\textwidth}
+            LSTMs and GRUs are powerful, but they're still shallow
+
+            \begin{block}{}
+                By far the most common way to make them deep is to \alert{stack} them
+            \end{block}
+
             \begin{itemize}
-                \item LSTMs and GRUs are powerful, but they're still shallow
-                \item By far the most common way to make them deep is to \alert{stack} them
                 \item Output of one RNN used as input to another; repeat \emph{ad infinitum}
                 \pause
                 \item RNNs can be bidirectional
@@ -194,61 +236,59 @@
 \end{frame}
 
 \begin{frame}{Other deep RNNs: deep input-to-state connections}
-    \hspace{2cm}
-    \input{figures/deep_input_unfolded}
-    \input{figures/deep_input_folded}
+    \input{figures/deep_input}
 \end{frame}
 
 \begin{frame}{Other deep RNNs: deep state-to-output connections}
-    \hspace{2cm}
-    \input{figures/deep_output_unfolded}
-    \input{figures/deep_output_folded}
+    \vspace{-2.8mm}
+    \input{figures/deep_output}
 \end{frame}
 
-\begin{frame}{Other deep RNNs: multiple recurrent state layers \citep{GravesICASSP13}}
-    \hspace{2cm}
-    \input{figures/deep_state_unfolded}
-    \input{figures/deep_state_folded}
+\setcounter{footnote}{0}
+
+\begin{frame}{Other deep RNNs: multiple recurrent state layers\footnote{\citet{GravesICASSP13}}}
+    \vspace{1.6mm}
+    \input{figures/deep_state}
 \end{frame}
 
-\begin{frame}{Other deep RNNs: deep state-to-state connections \citep{PascanuICLR14}}
+\setcounter{footnote}{0}
+
+\begin{frame}{Other deep RNNs: deep state-to-state connections\footnote{\citet{PascanuICLR14}}}
     \input{figures/deep_state_to_state_unfolded}
-    \input{figures/deep_state_to_state_folded}
+
+    \vspace{-1em}
+    \uncover<.->{Skip connections help prevent vanishing/exploding gradients by shortening state-to-state paths
+}
 \end{frame}
 
-\begin{frame}{Odds \& ends (1/2)}
-    \begin{itemize}
-        \item<+-> Skip connections help prevent vanishing/exploding gradients by shortening state-to-state paths
-        \item<+-> Gradient clipping helps prevent exploding gradients \citep{MikolovPhD12,PascanuICML13}
-        \item<+-> Stateful RNN
-        \begin{itemize}[<.->]
-            \item Typically, initialize cell state to $\s_0 = \zero$
-            \item<+-> Stateful: set $\s_0$ to be $\s_\tau$ from the last RNN invocation
-            \item Used when actual sequence length $>$ RNN length: each RNN invocation extends previous one
-            \item Use truncated backpropagation through time: only backprop through beginning of RNN, not beginning of sequence
-        \end{itemize}
+\begin{frame}{Stateful RNN}
+    \begin{itemize}[<.->]
+        \item<+-> Typically, initialize cell state to $\s_0 = \zero$
+        \item<+-> Stateful: set $\s_0$ to be $\s_\tau$ from the last RNN invocation
+        \item Used when actual sequence length $>$ RNN length: each RNN invocation extends previous one
+        \item Use truncated backpropagation through time: only backprop through beginning of RNN, not beginning of sequence
     \end{itemize}
 
     \centering
     \input{figures/stateful}
 \end{frame}
 
-\begin{frame}{Odds \& ends (2/2)}
+\begin{frame}{Variable lengths}
+    \uncover<+->{Variable-length RNN}
     \begin{itemize}
-        \item<+-> Variable-length RNN
+        \item Beauty of RNN is that length $\tau$ need not be fixed
+        \item Recall silly example: variable length of speech auto $\to$ variable length sentence
+        \item But static-length RNNs are more computationally optimizable
+    \end{itemize}
+    \pause
+
+    Variable-length inputs/outputs
+    \begin{itemize}
+        \item Common approach: add \texttt{<end>} token to vocabulary; stop RNN when \texttt{<end>} sampled
+        \item More generally: add extra scalar output that ends RNN when condition met
+        \item Alternate approach: add output that predicts length $\tau$; then run for $\tau$ steps
         \begin{itemize}
-            \item Beauty of RNN is that length $\tau$ need not be fixed
-            \item Recall silly example: variable length of speech auto $\to$ variable length sentence
-            \item But static-length RNNs are more computationally optimizable
-        \end{itemize}
-        \item<+-> Variable-length inputs/outputs
-        \begin{itemize}
-            \item Common approach: add \texttt{<end>} token to vocabulary; stop RNN when \texttt{<end>} sampled
-            \item More generally: add extra scalar output that ends RNN when condition met
-            \item Alternate approach: add output that predicts length $\tau$; then run for $\tau$ steps
-            \begin{itemize}
-                \item Important to add $\tau$ or $\tau - t$ as input to node $t$, lest sequence ends abruptly
-            \end{itemize}
+            \item Important to add $\tau$ or $\tau - t$ as input to node $t$, lest sequence ends abruptly
         \end{itemize}
     \end{itemize}
 \end{frame}

@@ -1,4 +1,4 @@
-\begin{tikzpicture}[node distance=1cm]
+\begin{tikzpicture}[node distance=6mm]
     % Nodes.
 
     % Inputs.
@@ -9,19 +9,19 @@
 
     % RNNs.
     \foreach \i in {1, 2, 4} {%
-        \node (node 1\i) [lstm, above=5.5mm of node 0\i] {RNN};
-        \node (node 2\i) [lstm, above=5.5mm of node 1\i] {RNN};
-        \node (node 3\i) [block, above=5.5mm of node 2\i] {\vvdots};
-        \node (node 4\i) [lstm, above=5.5mm of node 3\i] {RNN};
-        \node (node 5\i) [block, above=5.5mm of node 4\i] {$\y_\i$};
+        \node (node 1\i) [lstm, above=of node 0\i] {RNN};
+        \node (node 2\i) [lstm, above=of node 1\i] {RNN};
+        \node (node 3\i) [block, above=of node 2\i] {\vvdots};
+        \node (node 4\i) [lstm, above=of node 3\i] {RNN};
+        \node (node 5\i) [block, above=of node 4\i] {$\y_\i$};
     }
 
     % Ellipses.
-    \node (node 13) [block, above=5.5mm of node 03] {$\cdots$};
-    \node (node 23) [block, above=5.5mm of node 13] {$\cdots$};
-    \node (node 33) [block, above=5.5mm of node 23] {\vvdots};
-    \node (node 43) [block, above=5.5mm of node 33] {$\cdots$};
-    \node (node 53) [block, above=5.5mm of node 43] {$\cdots$};
+    \node (node 13) [block, above=of node 03] {$\cdots$};
+    \node (node 23) [block, above=of node 13] {$\cdots$};
+    \node (node 33) [block, above=of node 23] {\vvdots};
+    \node (node 43) [block, above=of node 33] {$\cdots$};
+    \node (node 53) [block, above=of node 43] {$\cdots$};
 
     % Horizontal arrows.
     \foreach \n in {1, 2, 4} {%

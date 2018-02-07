@@ -1,6 +1,6 @@
 \begin{tikzpicture}[node distance=7mm, auto]
     % States.
-    \node (state05) [state] {$\z_0$};
+    \uncover<+->{\node (state05) [state] {$\z_0$};}
     \node (state1) [state, right=5mm of state05] {$\s_1$};
     \node (state15) [state, right=5mm of state1] {$\z_1$};
     \node (state2) [state, right=5mm of state15] {$\s_2$};
@@ -35,7 +35,7 @@
 
     % Labels.
     \foreach \l in {state, input, output, loss, data} {
-        \node [right=of \l4] {\l};
+        \node [right=0.5mm of \l4] {\l};
     }
 
     % Arrows.
@@ -56,7 +56,7 @@
     }
 
     % Skip connections.
-    \uncover<2->{
+    \uncover<+->{
         \foreach \i in {1, ..., 3} {
             \pgfmathtruncatemacro{\j}{\i + 1}
             \draw [path] (state\i) ..
