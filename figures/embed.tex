@@ -32,36 +32,6 @@
     }
 
     \draw [path] (e rnn 5) -- (e output);
-
-    % Projections.
-    \node (f rnn 0) [lstm, right=of embed 5] {RNN};
-
-    \foreach \i in {0, ..., 3} {
-        \pgfmathtruncatemacro{\j}{\i + 1}
-        \node (f rnn \j) [lstm, right=of f rnn \i] {RNN};
-    }
-
-    \foreach \i in {0, ..., 4} {
-        \node (f input \i) [coordinate, below=of f rnn \i] {};
-        \node (project \i) [word, dense, above=of f rnn \i] {map};
-    }
-
-    \node (f output 0) [word, above=of project 0] {Je};
-    \node (f output 1) [word, above=of project 1] {l'ai};
-    \node (f output 2) [word, above=of project 2] {jet\'e};
-    \node (f output 3) [word, above=of project 3] {par};
-    \node (f output 4) [word, above=of project 4] {terre};
-
-    \foreach \i in {0, ..., 4} {
-        \draw [path] (f input \i) -- (f rnn \i);
-        \draw [path] (f rnn \i) -- node [label, right] {$\Reals^{\tilde{d}}$} (project \i);
-        \draw [path] (project \i) -- node [label, right] {$\Reals^d$} (f output \i);
-    }
-
-    \foreach \i in {0, ..., 3} {
-        \pgfmathtruncatemacro{\j}{\i + 1}
-        \draw [path] (f rnn \i) -- (f rnn \j);
-    }
 \end{tikzpicture}
 
 %%% Local Variables:

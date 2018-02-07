@@ -1,14 +1,13 @@
 \begin{tikzpicture}[node distance=7mm, auto]
     % States.
-    \node (state1) [block] {$\cdots$};
-    \node (state2) [state, right=of state1] {$\s_{\tau-2}$};
+    \node (state2) [block] {$\cdots$};
     \node (state3) [state, right=of state2] {$\s_{\tau-1}$};
     \node (state4) [state, right=of state3] {$\s_\tau$};
 
     % Inputs.
-    \node (input1) [block, below=of state1] {$\cdots$};
+    \node (input2) [block, below=of state2] {$\cdots$};
 
-    \foreach\i/\j in {2/-2, 3/-1, 4/} {
+    \foreach\i/\j in {3/-1, 4/} {
         \node (input\i) [state, below=of state\i] {$\x_{\tau\j}$};
     }
 
@@ -20,11 +19,11 @@
     \node (data) [data, left=of loss] {$\ETA$};
 
     % Arrows.
-    \foreach\i in {1, ..., 4} {
+    \foreach\i in {2, ..., 4} {
         \draw [path] (input\i) -- node [label, pos=0.4, right] {$\f$} (state\i);
     }
 
-    \foreach\i/\j in {1/2, 2/3, 3/4} {
+    \foreach\i/\j in {2/3, 3/4} {
         \draw [path] (state\i) -- node [label, pos=0.4] {$\f$} (state\j);
     }
 

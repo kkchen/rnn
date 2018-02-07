@@ -1,29 +1,45 @@
 \section{Inputs \& outputs}
 \subsection{}
 
-\begin{frame}{Fixed-sized inputs}
+\begin{frame}{Fixed-sized inputs (1/2)}
     \begin{columns}
-        \begin{column}{0.15\textwidth}
-            \uncover<2->{\input{figures/latent_input}}
-        \end{column}
-        \begin{column}{0.41\textwidth}
-            In some RNN applications, need to feed in constant \emph{fixed-size} $\z \in \Reals^l$
+        \begin{column}{0.816\textwidth}
+            \begin{block}{}
+                In some RNN applications, need to feed in constant \emph{fixed-size} $\z \in \Reals^l$
+            \end{block}
+
             \begin{itemize}
                 \item<+-> I.e., not a sequence
                 \item $\z$ may be contextual information, or a latent vector
                 \item Input sequence $\x_t$ might not even exist
                 \item E.g., latent-to-sequence decoder
             \end{itemize}
-            \uncover<+->{Common approaches}
+
+            \begin{block}{Common approach 1}<+->
+                Append \textcolor{Green4}{$\z$} to \emph{every} input $\x_t$
+            \end{block}
+        \end{column}
+        \begin{column}{0.184\textwidth}
+            \uncover<.->{\input{figures/latent_input}}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Fixed-size inputs (2/2)}
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \begin{block}{Common approach 2}<+->
+                Set initial state \textcolor{Green4}{$\s_0 = \z$}
+            \end{block}
+            \begin{block}{Common approach 3}<+->
+                Combine 1 \& 2
+            \end{block}
             \begin{itemize}
-                \item<.-> Left: append $\z$ to \emph{every} input $\x_t$
-                \item<+-> Right: set initial state $\s_0 = \z$
-                \item<.-> Combination of both
+                \item Downside: both force $\dim(\s_t) = \dim(\z)$
             \end{itemize}
         \end{column}
-        \begin{column}{0.44\textwidth}
-            \uncover<3->{\input{figures/latent_state}}
-            \vspace{-4mm}
+        \begin{column}{0.6\textwidth}
+            \input{figures/latent_state}
         \end{column}
     \end{columns}
 \end{frame}
@@ -34,17 +50,17 @@
             \uncover<2->{\input{figures/output}}
         \end{column}
         \begin{column}{0.63\textwidth}
-            In some RNN applications, need a \emph{fixed-size} output $\y \in \Reals^p$
+            Sometimes need a \emph{fixed-size} output $\y \in \Reals^p$
             \begin{itemize}
                 \item<+-> I.e., not a sequence
                 \item $\y$ may be classification of a sequence
-                \item $\y$ may be a latent vector, e.g., sequence encoder
+                \item $\y$ may be a latent vector, e.g., from sequence encoder
             \end{itemize}
             \uncover<+->{Common approach}
             \begin{itemize}[<.->]
-                \item Ignore all RNN outputs $\o_t$ except the last
+                \item Ignore all RNN outputs $\o_t$ except last
                 \item Feed $\o_\tau$ to dense layer(s)
-                \item Final dense layer has width $p$ and output $\y$
+                \item Final dense layer outputs $\y \in \Reals^p$
             \end{itemize}
             \uncover<+->{Justification}
             \begin{itemize}[<.->]
@@ -56,46 +72,70 @@
 \end{frame}
 
 \begin{frame}{Encoder--decoder sequence-to-sequence models, figure}
-    \vspace{5mm}
-    \input{figures/encoder_decoder}
-    \vspace{-2.5mm}
+    If inputs $\x_1, \dots, \x_\tau$ and outputs $\y_1, \dots, \y_{\hat{\tau}}$ have different/variable lengths, \alert{encode} inputs to latent vector $\z \in \Reals^l$\uncover<2->{, and \alert{decode} $\z$ to outputs}
+    \vspace{1ex}
 
-    \begin{textblock}{9.5}(1,2)
-        If inputs $\x_1, \dots, \x_\tau$ and outputs $\y_1, \dots, \y_{\hat{\tau}}$ have different/variable lengths, \alert{encode} inputs to latent vector $\z \in \Reals^l$\uncover<2->{, and \alert{decode} $\z$ to outputs}
-    \end{textblock}
+    \input{figures/encoder_decoder}
 \end{frame}
 
-% To do: explain attention mechanism.
 \begin{frame}{Encoder--decoder sequence-to-sequence models, notes}
-    \begin{itemize}
-        \item Introduced by \citet{ChoEMNLP14}, \citet{Sutskever14}
-        \item Many ways to connect encoder and decoder
+    \begin{itemize}[<.->]
+        \item<+-> Introduced by \citet{ChoEMNLP14}, \citet{Sutskever14}
+        \item Key motivation: machine translation (e.g., English sentence $\to$ French sentence)
+        \item<+-> Many ways to connect encoder and decoder
         \begin{itemize}
-            \item Simplest: $\hat{\s}_1 = \s_\tau$; forces $\dim(\s_t) = \dim(\hat{\s}_t)$
+            \item Simplest: $\sh_1 = \s_\tau$; forces $\dim(\s_t) = \dim(\sh_t)$
             \item As shown: use dense layer on encoder output $\o_\tau$; allows $\dim(\z) \ne \dim(\s_t)$
-            \item As aforementioned: can feed $\z$ as input to every input (as shown), use $\hat{\s}_1 = \z$ (forces $\dim(\z) = \dim(\hat{\s}_{\hat{t}})$), or both
+            \item As shown: feed $\z$ as input to every input; $\exists$ other ways to feed $\z$ to decoder
         \end{itemize}
-        \pause
-        \item Problem: difficult to encode all of $\x_1, \dots, \x_\tau$ in single vector $\z$ extracted from $\s_\tau$, especially for large $\tau$
-        \item Solution: attention mechanism \citep{BahdanauICLR15}
+        \item<+-> Problem: difficult to encode all of $\x_1, \dots, \x_\tau$ in single vector $\z$ extracted from $\s_\tau$, especially for large $\tau$
         \begin{itemize}
-            \item Encoder hidden states $\s_1, \dots, \s_\tau$ are stored
-            \item At each $\hat{t}$ in the decoder, weighted average of $\s_1, \dots, \s_\tau$ forms context vector $\c_{\hat{t}}$
-            \item Weights are based on how well $\s_t$ aligns with $\hat{\s}_{\hat{t}}$
-            \item Context vector $\c_{\hat{t}}$ fed into decoder
+            \item Can the meaning of an entire sentence be encoded in $\z \in \Reals^l$?
+            \item Solution\ldots
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\setcounter{footnote}{0}
+
+\begin{frame}{Attention mechanism,\footnote{\citet{BahdanauICLR15}} motivation}
+    \begin{columns}
+        \begin{column}{0.6\textwidth}
+            \input{figures/translation}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \begin{itemize}
+                \item In machine translation, source \& target languages order words differently
+                \item Let decoder RNN learn what part of input sequence to pay attention to at each time step
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Attention mechanism}
+    \begin{center}
+        \input{figures/attention}
+    \end{center}
+
+    \begin{itemize}
+        \item At each $\th$ in the decoder, weighted average of $\s_1, \dots, \s_\tau$ forms context vector $\c_{\th}$
+        \item Weights computed from trained alignment model
+        \begin{itemize}
+            \item Yields how well $\s_t$ \alert{aligns} with $\sh_{\th}$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Embeddings}
     \begin{itemize}
-        \item When classifying by one-hot encoding, all $c$ classes are $\sqrt{2}$ apart in $L^2$ distance
-        \item One-hot is fine for small $c$, but dim-$\tilde{c}$ embeddings ($\tilde{c} \ll c$) generally do better for large $c$
+        \item When classifying by one-hot encoding, all $c$ classes have identical $L^p$ distance from all others
+        \item One-hot is fine for small $c$, but for large $c$, dim-$\tilde{c} \ll c$ \textcolor{Green4}{embeddings} generally do better
         \item E.g., \texttt{sheep} should have smaller distance to \texttt{ewe} or \texttt{goat} than to \texttt{quasar} or \texttt{supersonic}
-        \item Embeddings can be pre-trained, or simultaneously trained with RNN
+        \item \textcolor{Green4}{Embeddings} can be pre-trained, or simultaneously trained with RNN
         \item Note: not at all unique to RNNs
     \end{itemize}
 
+    \centering
     \input{figures/embed}
 \end{frame}
 
