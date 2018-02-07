@@ -1,20 +1,39 @@
 \section{Alternate architectures}
 \subsection{}
 
-% To do: explain HMM.
-\begin{frame}{RNNs and Hidden Markov Models}
+% To do: HMM outputs.
+\begin{frame}{Hidden Markov Model}
     \begin{columns}
-        \begin{column}{0.46\textwidth}
+        \begin{column}{0.53\textwidth}
             \input{figures/hmm}
         \end{column}
-        \begin{column}{0.54\textwidth}
+        \begin{column}{0.47\textwidth}
+            HMM: a powerful modeling technique predating RNNs (I think)
             \begin{itemize}
-                \item<+-> RNNs are deterministic, HMMs are stochastic
-                \item<.-> But posterior probabilities of states and outputs of HMMs are deterministic
+                \item $n$ states
+                \item Initial state $i$ chosen with some probability
+                \item For each state $i$, some probability of transitioning to state $j$ at next time step
+                \item At each time step, state $i$ gives output $k$ with some probability
             \end{itemize}
-            \begin{block}{}<+->
-                An HMM, when viewed in terms of probabilities, is a special case of an RNN
-            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{RNNs and HMMs}
+    \begin{itemize}
+        \item<+-> RNNs are deterministic, HMMs are stochastic
+        \item<.-> But posterior probabilities of HMM states and outputs are deterministic
+    \end{itemize}
+
+    \begin{block}{}<+->
+        An HMM, in terms of probabilities, is a special case of an RNN
+    \end{block}
+
+    \begin{columns}
+        \begin{column}{0.53\textwidth}
+            \input{figures/hmm}
+        \end{column}
+        \begin{column}{0.47\textwidth}
             \begin{itemize}[<.->]
                 \item HMM transition probabilities analogous to RNN weights
                 \item<+-> Why do traditional RNNs and HMMs excel at different tasks?
@@ -33,10 +52,10 @@
     \end{itemize}
     \uncover<+->{Can use 1-D CNNs to process sequences}
 
-    \vspace{-4mm}
+    \vspace{-3.5mm}
     \begin{center}
         \input{figures/cnn}
-        \vspace{4mm}
+        \vspace{3.5mm}
 
         \uncover<+->{
             \begin{tabular}{c|c}
