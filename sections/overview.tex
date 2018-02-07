@@ -17,30 +17,42 @@
 
 \begin{frame}{Why might I want an RNN?}
     \begin{itemize}
-        \item Universal approximation theorem: dense NN{}s can model anything nice
+        \item<+-> Universal approximation theorem: dense NN{}s can model anything nice
         \begin{itemize}
             \item But doesn't specify how hard it is to train
         \end{itemize}
-        \item Silly example: 5 seconds of 44,100 samples/s speech audio $\rightarrow$ 14 transcribed words
+        \item<+-> Silly example: 5 seconds of 44,100 samples/s speech audio $\rightarrow$ 14 transcribed words
         \begin{itemize}
             \item $\exists$ $\sim$3000 commonly-used English words\footnote{The Internet}
             \item $\Reals^{220,500} \to \Reals^{42,000}$ deep dense network?
-            (Theoretically possible, but please don't)
+            \begin{itemize}
+                \item Theoretically possible, but please don't
+            \end{itemize}
             \item What if I speak 15 words over 5.01~s?
+            Must start over!
+        \end{itemize}
+        \item<+-> More relevant example: predict some quantity from a fluid flow
+        \begin{itemize}
+            \item Dynamics (e.g., Navier--Stokes) do not change from time $t$ to $t + \Delta t$
+            \item Dense network does not know this; allows any dynamical behavior at any $t$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{What RNNs do}
-    \begin{block}{}
+    \begin{block}{Key motivation}<+->
         Many processes are sequences through \alert{time} or \alert{steps}, with \alert{time-invariant dynamics}
     \end{block}
-    \pause
+
+    \begin{block}{RNN{}s are input--output models that impose this structure}<+->
+        Interpretation for mechanical/aerospace/electrical engineers: RNNs are \alert{discrete-time nonlinear time-invariant dynamical systems} in which the input/state/output dynamics are learned from (i.e., fitted to) data
+    \end{block}
 
     \begin{itemize}
-        \item RNN{}s are input--output models that force this structure
+        \item Note: RNN states usually very difficult to interpret
+        \item E.g., RNN{}s assign same dynamics @ time step 213,913 as 213,914
         \begin{itemize}
-            \item E.g., RNN{}s treat sample 213,913 same as 213,914; dense NN{}s treat them entirely separately
+            \item Dense NN{}s treat them entirely separately
         \end{itemize}
         \item Easier to converge to model with ``reasonable''/``desirable'' behavior
         \item Far fewer parameters than naive dense networks
@@ -48,19 +60,8 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Unfolded computational graphs (left) \& circuit diagrams (right)}
-    \begin{columns}
-        \begin{column}{0.71\textwidth}
-            \uncover<+->{\input{figures/unfolded}}
-            \uncover<+->{\input{figures/folded}}
-        \end{column}
-        \begin{column}{0.29\textwidth}
-            \begin{itemize}
-                \item<1-> Unfolded graph shows flow of vectors through RNN
-                \item<2-> Circuit diagram compresses out time dimension
-            \end{itemize}
-        \end{column}
-    \end{columns}
+\begin{frame}{Unfolded computational graphs \& circuit diagrams}
+    \input{figures/rnn}
 \end{frame}
 
 \begin{frame}{Recurrent neural networks in one slide}
@@ -84,14 +85,17 @@
             \y_t = \mathrm{softmax}(\V \s_{t} + \c), \;
             \PHI = (\V, \c)
         \end{equation*}
-        \item That's it!  Now pick $\THETA$ and $\PHI$ to minimize loss $L(
-            \underbrace{(\ETA_1, \dots, \ETA_\tau)}_\text{data},
-            \underbrace{(\y_1, \dots, \y_\tau)}_\text{prediction}
-        )$
+        \item That's it!  Now pick $\THETA$ and $\PHI$ to minimize
+        \begin{equation*}
+            \mathrm{loss} = L(
+                \underbrace{(\ETA_1, \dots, \ETA_\tau)}_\text{data},
+                \underbrace{(\y_1, \dots, \y_\tau)}_\text{prediction}
+            )
+        \end{equation*}
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Backpropagation \& unrolling}
+\begin{frame}{Backpropagation through time \& unrolling}
     \begin{itemize}
         \item<+-> I won't bore you with backprop equations; see \href{http://www.deeplearningbook.org}{\textcolor{blue}{Goodfellow's book}}
         \item<.-> It's just a normal gradient via chain rule; any optimizer can be used
