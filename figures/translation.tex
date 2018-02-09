@@ -1,10 +1,10 @@
-\begin{tikzpicture}[word/.style={font=\footnotesize, inner sep=0pt}]
+\begin{tikzpicture}
     \foreach \i/\word in {0/I, 1/threw, 2/it, 3/on, 4/the, 5/ground} {
-        \node at (\i + 0.5, 0.3) [word] {\word};
+        \node at (\i + 0.5, 0.3) [wordmini] {\word};
     }
 
     \foreach \i/\word in {0/Je, 1/l', 2/ai, 3/jet\'e, 4/par, 5/terre} {
-        \node at (-0.3, -\i - 0.5) [word, rotate=270] {\word};
+        \node at (-0.3, -\i - 0.5) [wordmini, rotate=270] {\word};
     }
 
     % Je

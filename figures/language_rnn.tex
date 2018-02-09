@@ -1,0 +1,49 @@
+\begin{tikzpicture}[node distance=3mm, slstm/.style={lstm, font=\footnotesize, minimum height=5mm}]
+    % Nodes.
+    \node (lstm 00) [slstm] {LSTM};
+    \node (lstm 10) [slstm, above=of lstm 00] {LSTM};
+
+    \foreach \i in {1, ..., 4} {
+        \pgfmathtruncatemacro{\j}{\i - 1}
+
+        \foreach \layer in {0, 1} {
+            \node (lstm \layer\i) [slstm, right=of lstm \layer\j] {LSTM};
+        }
+    }
+
+    \foreach \layer in {0, 1} {
+        \node (lstm \layer 5) [block, font=\footnotesize, right=of lstm \layer 4] {$\cdots$};
+        \node (lstm \layer 6) [slstm, right=of lstm \layer 5] {LSTM};
+    }
+
+    \node (dense) [dense, minimum height=5mm, font=\footnotesize, above=of lstm 16] {dense};
+    \node (sigmoid) [gate, minimum height=5mm, font=\footnotesize, right=of dense] {$\sigma$};
+    \node (output) [font=\footnotesize, right=of sigmoid] {$[0, 1]$};
+
+    \foreach \i/\char in {0/k, 1/o, 2/s, 3/t, 4/r, 5/$\cdots$, 6/<end>} {
+        \node (input \i) [word, below=of lstm 0\i] {\texttt{\char}};
+    }
+
+    % Arrows.
+    \foreach \i in {0, ..., 6} {
+        \draw [path] (input \i) -- (lstm 0\i);
+        \draw [path] (lstm 0\i) -- (lstm 1\i);
+    }
+
+    \foreach \i in {1, ..., 6} {
+        \pgfmathtruncatemacro{\j}{\i - 1}
+
+        \foreach \layer in {0, 1} {
+            \draw [path] (lstm \layer\j) -- (lstm \layer \i);
+        }
+    }
+
+    \draw [path] (lstm 16) -- (dense);
+    \draw [path] (dense) -- (sigmoid);
+    \draw [path] (sigmoid) -- (output);
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../rnn"
+%%% End:

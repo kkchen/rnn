@@ -1,7 +1,55 @@
 \section{Examples}
 \subsection{}
 
-% To do: language discriminator.
+\begin{frame}[fragile]{Language discriminator}
+    \begin{block}{}<+->
+        Problem: given a word, discriminate it as English (0) vs.\ German (1)
+    \end{block}
+
+    \centering
+    \input{figures/language_rnn}
+
+    \begin{columns}
+        \begin{column}{0.61\textwidth}
+            \vspace{-5mm}
+            \begin{itemize}
+                \item LSTM state size = 128
+                \pause
+                \item Data: $10^4$ English \& German words
+                \begin{itemize}
+                    \item Max length: 14 characters
+                    \item 80\%/20\% train/test split
+                \end{itemize}
+                \pause
+                \item TensorFlow, 1 CPU \& 1 GPU:
+                \begin{itemize}
+                    \item $\sim$30~m to write code
+                    \item 7~s to build model
+                    \item 6~s to train 15 epochs
+                \end{itemize}
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.39\textwidth}
+            \pause
+            Result: 81.9\% test accuracy
+            \vspace{-17pt}
+            \footnotesize
+\begin{verbatim}
+informatic: 0.083
+helical: 0.050
+lamentation: 0.097
+baste: 0.528
+surging: 0.222
+kostritzer: 0.987
+krombacher: 0.996
+erhard: 0.272
+wernesgruner: 0.992
+oettingen: 0.794
+\end{verbatim}
+        \end{column}
+    \end{columns}
+\end{frame}
+
 % To do: language translation.
 % To do: text generation?
 % To do: Speech-to-text?
