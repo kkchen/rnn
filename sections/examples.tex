@@ -50,10 +50,56 @@ oettingen: 0.794
     \end{columns}
 \end{frame}
 
-% To do: language translation.
-% To do: text generation?
-% To do: Speech-to-text?
-% To do: something not language-related?
+\setcounter{footnote}{0}
+
+\begin{frame}{%
+    Very short list of RNN applications\footnote{%
+        Only one/a few representative papers cited because of space limitations.%
+    } (1/2)%
+}
+    \begin{columns}
+        \begin{column}{0.63\textwidth}
+            \begin{itemize}[<+->]
+                \item Speech-to-text \citep{Battenberg17}
+                \item \href{%
+                    https://magenta.tensorflow.org/performance-rnn%
+                }{%
+                    \textcolor{blue}{Performance RNN}%
+                }: Google's music composer \citep{performanceRNN}
+                \item Robotics control \citep{WuJIRS07}
+                \item Handwriting-to-text \citep{GravesICASSP13}
+            \end{itemize}
+            \vspace{5mm}
+
+            \visible<.->{\includegraphics[width=\textwidth]{handwriting}}
+        \end{column}
+        \begin{column}{0.37\textwidth}
+            \includegraphics[width=\textwidth]{speech_text}
+        \end{column}
+    \end{columns}
+    \vspace{2mm}
+\end{frame}
+
+\begin{frame}{Very short list of RNN applications (2/2)}
+    \begin{itemize}[<+->]
+        \item Given several video frames, predict the next frames
+        \citep{SrivastavaICML15, Vukotic17}
+    \end{itemize}
+    \visible<.->{\includegraphics[width=\textwidth]{video_prediction}}
+
+    \begin{columns}
+        \begin{column}{0.43\textwidth}
+            \begin{itemize}[<+->]
+                \item Speaker attribution \citep{RenAAAICAI16}
+                \item Modeling processes in physics (see \href{https://dl4physicalsciences.github.io}{\textcolor{blue}{NIPS 2017 workshop on Deep Learning for Physical Sciences}})
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \vspace{2mm}
+            \visible<2->{\includegraphics[width=\textwidth]{bigbang}}
+        \end{column}
+    \end{columns}
+\end{frame}
 
 %%% Local Variables:
 %%% mode: latex
