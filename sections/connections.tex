@@ -56,7 +56,7 @@
             \end{block}
 
             \begin{itemize}[<.->]
-                \item Forward \& backprop parallelizable
+                \item<+-> Forward \& backprop parallelizable
                 \item<+-> Inference: connect output $\y_t$ to $\s_t$
                 \item Can be combined with state-to-state or output-to-state connections for better performance
             \end{itemize}
@@ -128,7 +128,7 @@
         \begin{itemize}
             \item Otherwise, LSTM will forget too aggressively early in training
         \end{itemize}
-        \item<+-> Can include state $\s_t$ in gate operands (peephole connections)
+        \item<+-> Can include state $\s_t$ in gate operands (peephole connections; not shown)
         \item<+-> The most common and arguably the strongest RNN architecture in use today \citep{JozefowiczICML15}
     \end{itemize}
 \end{frame}
@@ -196,7 +196,7 @@
 
     \begin{columns}
         \begin{column}{0.6\textwidth}
-            \input{figures/bidirectional}
+            \uncover<.->{\input{figures/bidirectional}}
         \end{column}
         \begin{column}{0.4\textwidth}
             \begin{itemize}[<.->]
@@ -262,11 +262,11 @@
 \end{frame}
 
 \begin{frame}{Stateful RNN}
-    \begin{itemize}[<.->]
-        \item<+-> Typically, initialize cell state to $\s_0 = \zero$
-        \item<+-> Stateful: set $\s_0$ to be $\s_\tau$ from the last RNN invocation
-        \item Used when actual sequence length $>$ RNN length: each RNN invocation extends previous one
-        \item Use truncated backpropagation through time: only backprop through beginning of RNN, not beginning of sequence
+    \begin{itemize}[<+->]
+        \item Typically, initialize cell state to $\s_0 = \zero$
+        \item When actual sequence length $>$ RNN length: each RNN invocation extends previous one
+        \item Statefulness: set $\s_0$ to be $\s_\tau$ from the last RNN invocation
+        \item<.-> Use truncated backpropagation through time: only backprop through beginning of RNN, not beginning of sequence
     \end{itemize}
 
     \centering
@@ -274,7 +274,7 @@
 \end{frame}
 
 \begin{frame}{Variable lengths}
-    \uncover<+->{Variable-length RNN}
+    Variable-length RNN
     \begin{itemize}
         \item Beauty of RNN is that length $\tau$ need not be fixed
         \item Recall silly example: variable length of speech auto $\to$ variable length sentence

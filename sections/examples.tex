@@ -2,16 +2,17 @@
 \subsection{}
 
 \begin{frame}[fragile]{Language discriminator}
-    \begin{block}{}<+->
-        Problem: given a word, discriminate it as English (0) vs.\ German (1)
+    \vspace{-1mm}
+    \begin{block}{}
+        Discriminate word as English (0) vs.\ German/French (1)
     \end{block}
 
     \centering
     \input{figures/language_rnn}
 
+    \vspace{-3mm}
     \begin{columns}
         \begin{column}{0.61\textwidth}
-            \vspace{-5mm}
             \begin{itemize}
                 \item LSTM state size = 128
                 \pause
@@ -27,7 +28,7 @@
                     \item 7~s to build model
                     \item 6~s to train 15 epochs
                 \end{itemize}
-                \item My code: \blueurl{goo.gl/xomjs8}
+                \item My code: \blueurl{https://goo.gl/xomjs8}
             \end{itemize}
         \end{column}
         \begin{column}{0.39\textwidth}
@@ -55,7 +56,7 @@ oettingen: 0.794
 
 \begin{frame}{%
     Very short list of RNN applications\footnote{%
-        Only one/a few representative papers cited because of space limitations.%
+        Only one cited paper because of space limitations.%
     } (1/2)%
 }
     \begin{columns}

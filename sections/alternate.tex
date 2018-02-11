@@ -59,10 +59,11 @@
         \uncover<+->{
             \begin{tabular}{c|c}
                 RNN & CNN \\
-                \hline
+                \hline\hline
                 $\y_t$ depends on $\s_0, \dots, \s_t$ &
                 $\y_t$ depends on $\s_{t-\delta}, \dots, \s_{t+\delta}$ \\
                 (also $\s_{t+1}, \dots, \s_\tau$ if desired) \\
+                \hline
                 generally non-parallelizable across $t$ & parallelizable across $t$ \\
             \end{tabular}
         }
