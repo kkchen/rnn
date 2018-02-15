@@ -1,1 +1,11 @@
 Slides for recurrent neural network tutorial.
+
+As usual, compile the PDF with
+
+#+BEGIN_SRC sh
+for cmd in pdflatex bibtex pdflatex pdflatex
+do
+    $cmd rnn
+done
+#+END_SRC
+
