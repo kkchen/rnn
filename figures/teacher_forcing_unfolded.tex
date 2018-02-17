@@ -32,12 +32,7 @@
     }
 
     \foreach\i/\j in {1/2, 2/3, 3/4} {
-        \uncover<1>{
-            \draw [path] (data\i.-45) -- node [label, pos=0.45, right] {$\f$} (state\j.135);
-        }
-        \uncover<2->{
-            \draw [path] (output\i) -- node [label, pos=0.6, above] {$\f$} (state\j);
-        }
+        \draw [path] (data\i.-45) -- node [label, pos=0.45, right] {$\f$} (state\j.135);
     }
 \end{tikzpicture}
 %%% Local Variables:
